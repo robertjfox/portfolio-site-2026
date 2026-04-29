@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
-import { VT323 } from "next/font/google";
+import { Space_Mono } from "next/font/google";
 import "./globals.css";
 
-const vt323 = VT323({
-  weight: "400",
+const spaceMono = Space_Mono({
+  weight: ["400", "700"],
   variable: "--font-terminal",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "~/dev/portfolio",
-  description: "Developer portfolio — terminal edition",
+  title: "Robert Fox - Selected Works",
+  description: "Developer portfolio - Selected Works",
 };
 
 export default function RootLayout({
@@ -19,7 +19,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${vt323.variable} h-full`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${spaceMono.variable} h-full`}
+      suppressHydrationWarning
+    >
       <body className="min-h-full font-terminal bg-bg antialiased" suppressHydrationWarning>
         {children}
       </body>
