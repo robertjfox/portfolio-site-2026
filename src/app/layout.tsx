@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Space_Mono } from "next/font/google";
+import { AmbientOrbs } from "@/components/ambient-orbs";
 import "./globals.css";
 
 const spaceMono = Space_Mono({
@@ -24,8 +25,9 @@ export default function RootLayout({
       className={`${spaceMono.variable} h-full`}
       suppressHydrationWarning
     >
-      <body className="min-h-full font-terminal bg-bg antialiased" suppressHydrationWarning>
-        {children}
+      <body className="relative min-h-full font-terminal bg-bg antialiased" suppressHydrationWarning>
+        <AmbientOrbs />
+        <div className="relative z-10">{children}</div>
       </body>
     </html>
   );
