@@ -158,18 +158,6 @@ export const SELECTED_WORKS: SelectedWork[] = [
     ],
   },
   {
-    company: "ReachRx",
-    name: "ReachRx iOS App",
-    slug: "reachrx_ios_app",
-    icon: "user",
-    color: "#ef4444",
-    tags: ["Swift", "iOS", "Maps", "Messaging", "Scheduling"],
-    summary:
-      "Rep prospecting iOS app for finding doctor offices, viewing office contacts, messaging staff, and scheduling meetings with prescribers.",
-    about:
-      "Native iOS prospecting tool for pharmaceutical reps. Reps could explore a map of doctor offices, see office staff and prescribers inside each location, communicate directly with users in those offices, and schedule meetings to get in front of prescribers.",
-  },
-  {
     company: "AvantStay",
     name: "Internal Dashboard",
     slug: "internal_dashboard",
@@ -241,7 +229,6 @@ const PROJECT_ASSETS: Record<string, ProjectAssetCounts> = {
   ecom_ai_image_gen_platform: { screenshots: 3, diagrams: 0 },
   ecommerce_site: { screenshots: 3, diagrams: 0 },
   clinical_data_backed_llm_chat: { screenshots: 3, diagrams: 1 },
-  reachrx_ios_app: { screenshots: 1, diagrams: 0 },
   consumer_booking_site: { screenshots: 3, diagrams: 0 },
   internal_dashboard: { screenshots: 4, diagrams: 1 },
   rental_management_web_app: { screenshots: 6, diagrams: 0 },
@@ -330,9 +317,9 @@ export const COMPANIES: Company[] = [
     logo: "/logos/reachrx.png",
     website: "https://reachrx.ai",
     matches: ["ReachRx"],
-    tagline: "Clinical LLM chat and pharma rep iOS app.",
-    bio: "ReachRx built tools for pharmaceutical representatives, prescribers, and clinical staff, including clinical reference access and scheduling workflows.",
-    role: "I worked across mobile product development and clinical AI experiences, including an iOS app and a clinical data-backed LLM chat product.",
+    tagline: "Clinical data-backed LLM chat.",
+    bio: "ReachRx built clinical AI tools for prescribers and clinical staff, including fast access to authoritative clinical reference content.",
+    role: "I worked on the clinical data-backed LLM chat product, including RAG retrieval, source ingestion, embeddings, and retrieval pipelines for authoritative clinical material.",
   },
   {
     slug: "avantstay",
