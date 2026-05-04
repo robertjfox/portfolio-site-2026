@@ -105,12 +105,12 @@ export function LandingHero() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center">
-      <h1 className="relative min-h-[32px] text-prompt text-[26px] leading-[1.1] tracking-tight sm:min-h-[39px] sm:text-[32px] lg:min-h-[46px] lg:text-[38px]">
-        <span aria-hidden="true" className="invisible">
+    <div className="flex w-full flex-col items-center">
+      <h1 className="relative min-h-[32px] w-full text-center text-prompt text-[26px] leading-[1.1] tracking-tight sm:min-h-[39px] sm:text-[32px] lg:min-h-[46px] lg:text-[38px]">
+        <span aria-hidden="true" className="invisible whitespace-nowrap">
           {FULL_TITLE}
         </span>
-        <span className="absolute left-0 top-0 whitespace-nowrap text-left">
+        <span className="absolute inset-x-0 top-0 whitespace-nowrap text-center">
           {name}
           {role && (
             <>
@@ -122,7 +122,7 @@ export function LandingHero() {
         </span>
       </h1>
 
-      <p className="relative mt-6 max-w-3xl whitespace-pre-line text-left text-text leading-relaxed sm:text-[19px]">
+      <p className="relative mx-auto mt-6 w-full max-w-[58rem] translate-x-4 whitespace-pre-line text-left text-text leading-relaxed sm:text-[19px]">
         <span aria-hidden="true" className="invisible">
           {DESCRIPTION_SENTENCES.join(DESCRIPTION_SEPARATOR)}
         </span>

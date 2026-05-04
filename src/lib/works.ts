@@ -143,7 +143,7 @@ export const SELECTED_WORKS: SelectedWork[] = [
     sections: [
       {
         title: "Problem",
-        body: "Prescribers and clinical staff needed fast answers from trusted clinical reference material, but the answers were buried across too many sources to find quickly in the middle of real work. A generic chatbot was not enough: responses had to stay grounded in authoritative clinical data, expose the supporting context, and handle repeated use at production scale.",
+        body: "Prescribers and clinical staff needed fast answers from trusted clinical reference material while they were actively working.\n\nThe relevant information was spread across too many clinical sources for manual lookup to be practical.\n\nA generic chatbot was not enough: answers needed to be grounded, source-aware, and reliable at production scale.",
       },
       {
         title: "Solution",
