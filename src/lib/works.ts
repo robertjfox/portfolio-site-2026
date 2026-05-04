@@ -22,15 +22,29 @@ export type SelectedWork = {
 export const SELECTED_WORKS: SelectedWork[] = [
   {
     company: "Fox's Reports",
-    name: "Internal Retail Intelligence Platform",
+    name: "Internal Dashboard",
     slug: "analytics_dashboard",
     icon: "grid",
     color: "#6366f1",
     tags: ["Next.js", "SQL Server", "T-SQL", "Dashboards", "Integrations"],
     summary:
-      "Centralized internal dashboard that replaced 12+ legacy reports with team-specific tools for executives, buyers, HR, warehouse staff, stores, and marketing.",
+      "Business intelligence platform consolidating Fox's legacy reporting, inventory, product, image, and operational data into one internal system.",
     about:
-      "A centralized Next.js operating dashboard built on top of Fox's legacy SQL Server retail stack. It consolidated more than a dozen fragmented POS, inventory, purchase order, image, HR, warehouse, and store-level reports into one internal platform with live dashboards, merchandising tools, executive reporting, weekly newsletters, AI-assisted content workflows, and operational alerts.",
+      "Fox's internal business intelligence platform consolidates legacy reporting tools and scattered operational data into one system used daily by {9} buyers, executives, {20+} warehouse staff, and a {5-person} e-commerce team.",
+    sections: [
+      {
+        title: "Problem",
+        body: "Numerous legacy reports were acting as the source of truth for buying, inventory, warehouse, and store operations.\n\nData was scattered across purchase orders, warehouse ticketing, per-store invoices, and other operational systems.\n\nProduct images lived locally on each buyer's computer, with no centralized image store for e-commerce, stores, or internal tools.\n\nThe reporting experience was slow and static: non-interactive print-style reports, long loading times, and little ability to drill into the data.",
+      },
+      {
+        title: "Solution",
+        body: "I built a centralized business intelligence platform on top of the existing retail data stack. It brings purchase history, vendor data, warehouse activity, store-level invoices, SKU performance, pricing, sell-through, and product images into one internal system. The result is a single operating layer for buying, executive reporting, warehouse workflows, and e-commerce production.",
+      },
+      {
+        title: "Buying Workflow",
+        body: "The system helps a team of {9} buyers manage roughly {1,000} annual vendors and make decisions that inform more than {$28M} in annual inventory spend. It tracks {20K} unique SKUs, each with sell-through, pricing, inventory, vendor, and image data, so buyers can make decisions from one place instead of stitching context together from reports and local folders.",
+      },
+    ],
   },
   {
     company: "Fox's",
@@ -45,18 +59,6 @@ export const SELECTED_WORKS: SelectedWork[] = [
       "AI-powered product imagery workflow used daily by a {5-person} e-commerce team. Transforms vendor product photos into e-commerce-ready assets for foxs.com, replacing outsourced model photography and eliminating {~$100K} in annual production cost.",
   },
   {
-    company: "Fox's",
-    name: "E-commerce Site",
-    slug: "ecommerce_site",
-    icon: "globe",
-    color: "#6366f1",
-    tags: ["Next.js", "React", "TypeScript", "E-commerce APIs", "Search"],
-    summary:
-      "E-commerce platform serving 1.3M annual visitors for a $58M retail business.",
-    about:
-      "Consumer-facing e-commerce platform with {1.3M} annual visitors, supporting product catalog, checkout, marketing, fulfillment workflows, and the operational needs of a {$58M} retail business.",
-  },
-  {
     company: "Curait.ai",
     name: "Generative AI Styling App",
     slug: "generative_ai_styling_app",
@@ -66,23 +68,15 @@ export const SELECTED_WORKS: SelectedWork[] = [
     summary:
       "Generative styling app combining persistent user context, product search, and image generation.",
     about:
-      'A styling app that turns natural-language prompts like "wedding in austin" into shoppable outfits, with persistent style context across sessions and a TikTok-style feed for browsing looks.',
+      "A styling app that turns natural-language outfit intent into shoppable looks, with persistent style context across sessions and a TikTok-style feed for browsing outfits.",
     sections: [
       {
-        title: "Context",
-        body: "Fashion discovery is fundamentally a personal-context problem dressed up as a search problem. Most shopping flows treat each session as stateless, so users end up doing the work the system should be doing: translating vague intent into search terms, mentally composing outfits across fragmented results, and re-explaining their taste every visit. Curait was an attempt to push that work onto the model.",
-      },
-      {
-        title: "Constraints",
-        body: 'Three things made this harder than a typical RAG or chat product:\n\n- Style context had to persist meaningfully across sessions without bloating every prompt with the user\'s full history. Naive approaches either forget what the user likes or burn tokens re-establishing context on every request.\n\n- Vision-language models can describe a product image well but rank visual options poorly when given them one at a time. Asking "is this dress good for the user?" five times in parallel produces inconsistent answers.\n\n- The pipeline chains four external services per outfit: LLM for ideation, SerpAPI for product retrieval, vision model for ranking, and Gemini for avatar rendering. Each adds latency, cost, and a failure mode. End-to-end response time and unit economics had to be tolerable for a feed-style UX where users swipe through dozens of outfits per session.',
-      },
-      {
-        title: "Approach",
-        body: "I split the pipeline into a deterministic stage and a model stage so expensive vision calls only run on a pre-filtered candidate set. SerpAPI returns ~40 results per item; a deterministic filter cuts that down on hard constraints before anything reaches a vision model. Predictable latency, lower spend.\n\nFor ranking, I render candidates into a single numbered grid and have the vision model rank them in one pass. Pairwise vision calls were slow and inconsistent; relative ranking against a composite image is fast, cheap, and more accurate.\n\nUser context lives in a distilled profile updated from onboarding and in-app behavior, short enough to fit in every prompt without dominating it. Outfit ideation produces structured outputs so downstream SerpAPI calls are fully parameterized, with no parsing model prose into queries.",
+        title: "Problem",
+        body: "Online shopping is organized vendor by vendor, but outfit intent is not.\n\nUsers need broad search across stores, then compression based on occasion, formality, budget, body preferences, and taste history.\n\nCurait turns that open-ended search problem into shoppable outfits.",
       },
       {
         title: "Tradeoffs",
-        body: "To keep the feed UX feeling instant, I pre-generate the next outfit in the background while the user views the current one. This trades cost for experience; pre-generated outfits are wasted whenever a user closes the app or jumps threads, but the perceived latency win was worth it.\n\nThe flip side: pre-caching makes it trivial to swipe faster than the backend can keep up. So I simulate a brief loading state on cached outfits to pace the user. It looks like work, but it is really backpressure: the artificial delay keeps swipe rate aligned with generation rate and prevents the queue from blowing out.\n\nThe grid-ranking trick works because thumbnails are uniform; it would break for products that need detail inspection, like fit or fabric. Acceptable for discovery, not for purchase confirmation.\n\nI cut real-time outfit regeneration from in-session feedback. Latency budget did not support it, and the swipe UX makes misses cheap.",
+        body: "Quality vs speed: longer model reasoning improves outfits, but hurts feed latency.\n\nContext vs friction: richer onboarding improves personalization, but delays the first useful result.\n\nGeneral vs overfit: the profile has to capture taste without overreacting to one request or recent interaction.\n\nPerceived latency vs cost: pre-generating future outfits feels faster, but wastes compute when users stop swiping.",
       },
     ],
   },
@@ -145,15 +139,19 @@ export const SELECTED_WORKS: SelectedWork[] = [
     tags: ["LLMs", "RAG", "Embeddings", "Python", "Vector Search"],
     summary: "Clinical RAG chat used 500K+ times by 30K+ prescribers.",
     about:
-      "Clinical LLM chat interface backed by RAG retrieval, including source ingestion, embeddings, and retrieval pipelines across {30M+} indexed clinical articles. Now used {500K+} times by {30K+} prescribers.",
+      "Clinical LLM chat interface backed by RAG retrieval, including source ingestion, embeddings, and retrieval pipelines across {1M+} clinical sources. Now used {500K+} times by {30K+} prescribers.",
     sections: [
       {
         title: "Problem",
-        body: "Prescribers and clinical staff needed fast answers from trusted clinical reference material, but the source content was too large and fragmented to navigate during real workflows. A generic chatbot was not enough: responses had to stay grounded in authoritative clinical data, expose the supporting context, and handle repeated use at production scale.",
+        body: "Prescribers and clinical staff needed fast answers from trusted clinical reference material, but the answers were buried across too many sources to find quickly in the middle of real work. A generic chatbot was not enough: responses had to stay grounded in authoritative clinical data, expose the supporting context, and handle repeated use at production scale.",
       },
       {
         title: "Solution",
-        body: "Built a clinical RAG chat product around source ingestion, embeddings, vector search, and retrieval pipelines spanning {30M+} indexed clinical articles so answers could be generated from the right reference content instead of model memory alone. The system paired an LLM chat interface with clinical-data-backed retrieval, making it easier for prescribers to ask natural-language questions while keeping responses tied to authoritative source material.",
+        body: "Built a clinical RAG chat product around source ingestion, embeddings, vector search, and retrieval pipelines spanning {1M+} clinical sources so answers could be generated from the right reference content instead of model memory alone. The system paired an LLM chat interface with clinical-data-backed retrieval, making it easier for prescribers to ask natural-language questions while keeping responses tied to authoritative source material.",
+      },
+      {
+        title: "Conversation Actions",
+        body: "The chat flow also supported workflow-specific actions around the clinical answer: prior authorization templating, insurance checks, and pharma contact forms for specific drugs.",
       },
     ],
   },
@@ -191,31 +189,31 @@ export const SELECTED_WORKS: SelectedWork[] = [
     summary:
       "Booking web experience for avantstay.com, serving ~330K monthly visits across a 2,500-home portfolio.",
     about:
-      "Customer-facing surfaces on avantstay.com for one of the largest U.S. luxury short-term rental managers, serving {~330K} monthly visits across a {2,500-home} portfolio. Included landing pages, property search, property detail pages, and post-checkout workflows.",
+      "Customer-facing booking surfaces on avantstay.com for one of the largest U.S. luxury short-term rental managers, serving {~330K} monthly visits across a {2,500-home} portfolio. My work touched the full guest journey: landing pages, property search, map browsing, property detail pages, checkout, and post-checkout flows.",
+    sections: [
+      {
+        title: "Checkout + Post-Checkout",
+        body: "I worked on the booking and post-booking flow after a guest chose a property: checkout, Stripe and Affirm payment integrations, user agreement signing, value-added service upsells, Persona identity verification, and adding additional guests to a booking.",
+      },
+    ],
   },
   {
     company: "Rentroom",
-    name: "Rental Management Web App",
+    name: "Rental Management Platform",
     slug: "rental_management_web_app",
     icon: "file",
     color: "#38bdf8",
-    tags: ["React", "TypeScript", "Ruby on Rails", "PostgreSQL", "Stripe"],
+    tags: ["React", "TypeScript", "Swift", "Twilio"],
     summary:
-      "Property management SaaS used by 500+ landlords across 20,000+ units.",
+      "Property management platform with a landlord web app and tenant iOS app, used by 500+ landlords across 20,000+ units.",
     about:
-      "Property management platform used by {500+} landlords across {20,000+} units, including rent collection, maintenance ticketing, and tenant-facing workflows.",
-  },
-  {
-    company: "Rentroom",
-    name: "Tenant iOS App",
-    slug: "tenant_ios_app",
-    icon: "bag",
-    color: "#38bdf8",
-    tags: ["Swift", "iOS", "Stripe", "REST APIs", "Mobile UX"],
-    summary:
-      "Tenant payments app with potential to route $250M+ in annual rent across 20,000+ units.",
-    about:
-      "Tenant-facing iOS app for property management workflows, giving renters mobile access to rent payments, maintenance requests, and building communication. At a conservative rent estimate across {20,000+} units, the payment flow represents {$250M+} in potential annual rent volume.",
+      "Rentroom is a property management platform for landlords and tenants: a web app for landlords and supers, and an iOS app for tenants. The product covers leases, rent collection, maintenance, tenant communication, and day-to-day property operations across {500+} landlords, {20,000+} units, and {$15M} in rental payment volume.",
+    sections: [
+      {
+        title: "Maintenance System",
+        body: "I built the maintenance workflow across both sides of the product. The key product move was turning maintenance from scattered texts and calls into a shared ticket record across tenant, landlord, and SMS communication. Tenants could submit a ticket from the iOS app with photos and a short description. Landlords and supers could monitor, triage, and respond from the web app. Messaging was tied to the ticket itself, with Twilio routing updates and replies over SMS.",
+      },
+    ],
   },
 ];
 
@@ -227,7 +225,6 @@ type ProjectAssetCounts = {
 const PROJECT_ASSETS: Record<string, ProjectAssetCounts> = {
   analytics_dashboard: { screenshots: 3, diagrams: 0 },
   ecom_ai_image_gen_platform: { screenshots: 3, diagrams: 0 },
-  ecommerce_site: { screenshots: 3, diagrams: 0 },
   clinical_data_backed_llm_chat: { screenshots: 3, diagrams: 1 },
   consumer_booking_site: { screenshots: 3, diagrams: 0 },
   internal_dashboard: { screenshots: 4, diagrams: 1 },
@@ -284,7 +281,7 @@ export const COMPANIES: Company[] = [
     logo: "/logos/foxs.png",
     website: "https://foxs.com",
     matches: ["Fox's", "Fox's Reports"],
-    tagline: "Retail intelligence, e-commerce, and AI imagery.",
+    tagline: "Retail intelligence, and AI imagery workflow.",
     bio: "Fox's is a multi-store women's fashion retailer with a long-running retail operation, e-commerce business, merchandising workflow, and store-level sales process.",
     role: "I built internal tools, reporting systems, e-commerce workflows, and AI-assisted image generation products that connected legacy retail data to day-to-day business operations.",
   },
@@ -339,9 +336,9 @@ export const COMPANIES: Company[] = [
     logo: "/logos/rentroom.png",
     website: "https://rentroom.com",
     matches: ["Rentroom"],
-    tagline: "Property management web app and tenant iOS app.",
+    tagline: "Property management platform for landlords and tenants.",
     bio: "Rentroom is a property management platform for landlords and tenants, covering payments, maintenance, communication, and operational workflows.",
-    role: "I built web and mobile product surfaces for landlords and tenants, including rent collection, maintenance ticketing, and tenant-facing mobile workflows.",
+    role: "I built Rentroom's web app for landlords and supers and the iOS app for tenants, including rent collection, maintenance ticketing, and Twilio-backed tenant communication.",
   },
 ];
 

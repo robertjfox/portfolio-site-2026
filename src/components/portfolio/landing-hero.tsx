@@ -11,9 +11,10 @@ const NAME = "Robert Fox";
 const ROLE = "Software Engineer";
 const FULL_TITLE = `${NAME}, ${ROLE}`;
 const DESCRIPTION_SENTENCES = [
-  "Product-minded software engineer with 6+ years building production systems across healthcare, hospitality, property management, and retail.",
-  "Strongest at translating ambiguous business workflows into shipped software, AI tools, integrations, and internal platforms.",
+  "Software engineer and systems architect with 6+ years building production systems across property management, healthcare, and retail.",
+  "This is a collection of case studies highlighting a few of the systems I have created or contributed to.",
 ];
+const DESCRIPTION_SEPARATOR = "\n\n";
 
 const TYPE_DELAY_MS = 28;
 const DESCRIPTION_TYPE_DELAY_MS = 12;
@@ -38,7 +39,7 @@ export function LandingHero() {
       const timer = window.setTimeout(() => {
         setName(NAME);
         setRole(ROLE);
-        setDescription(DESCRIPTION_SENTENCES.join(" "));
+        setDescription(DESCRIPTION_SENTENCES.join(DESCRIPTION_SEPARATOR));
         setShowButton(true);
       }, 0);
       return () => window.clearTimeout(timer);
@@ -87,7 +88,7 @@ export function LandingHero() {
       await typeText(
         DESCRIPTION_SENTENCES[1],
         setDescription,
-        `${DESCRIPTION_SENTENCES[0]} `,
+        `${DESCRIPTION_SENTENCES[0]}${DESCRIPTION_SEPARATOR}`,
         DESCRIPTION_TYPE_DELAY_MS,
       );
       await wait(SECTION_PAUSE_MS);
@@ -121,9 +122,9 @@ export function LandingHero() {
         </span>
       </h1>
 
-      <p className="relative mt-6 min-h-[132px] max-w-3xl text-text leading-relaxed sm:min-h-[90px] sm:text-[19px]">
+      <p className="relative mt-6 max-w-3xl whitespace-pre-line text-left text-text leading-relaxed sm:text-[19px]">
         <span aria-hidden="true" className="invisible">
-          {DESCRIPTION_SENTENCES.join(" ")}
+          {DESCRIPTION_SENTENCES.join(DESCRIPTION_SEPARATOR)}
         </span>
         <span className="absolute left-0 top-0 w-full text-left">
           {description}

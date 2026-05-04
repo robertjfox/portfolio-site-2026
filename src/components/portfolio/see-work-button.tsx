@@ -13,8 +13,11 @@ export function SeeWorkButton() {
     >
       <span className="pointer-events-none absolute inset-x-2 top-0 h-px bg-gradient-to-r from-transparent via-white/70 to-transparent" />
       <span className="pointer-events-none absolute -left-8 top-0 h-full w-10 rotate-12 bg-white/20 blur-md transition-transform duration-700 group-hover:translate-x-36" />
-      <span className="relative">See work</span>
-      <span aria-hidden="true" className="relative transition-transform group-hover:translate-y-0.5">
+      <span className="relative">See my work</span>
+      <span
+        aria-hidden="true"
+        className="relative transition-transform group-hover:translate-y-0.5"
+      >
         ↓
       </span>
     </button>

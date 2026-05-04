@@ -1,4 +1,12 @@
-export function DiagramIcon({ name, color }: { name: string; color: string }) {
+export function DiagramIcon({
+  name,
+  color,
+  className = "h-9 w-9",
+}: {
+  name: string;
+  color: string;
+  className?: string;
+}) {
   const commonProps = {
     fill: "none",
     stroke: "currentColor",
@@ -10,7 +18,7 @@ export function DiagramIcon({ name, color }: { name: string; color: string }) {
   return (
     <svg
       aria-hidden="true"
-      className="h-9 w-9"
+      className={className}
       viewBox="0 0 48 48"
       style={{ color }}
     >
@@ -32,6 +40,18 @@ export function DiagramIcon({ name, color }: { name: string; color: string }) {
           d="M10 10h11v11H10V10zm17 0h11v11H27V10zM10 27h11v11H10V27zm17 0h11v11H27V27z"
         />
       )}
+      {name === "parallel" && (
+        <path
+          {...commonProps}
+          d="M8 24h8c5 0 7-10 14-10h10M30 14l-4-4m4 4-4 4M8 24h8c5 0 7 10 14 10h10M30 34l-4-4m4 4-4 4M8 24h32"
+        />
+      )}
+      {name === "timer" && (
+        <path
+          {...commonProps}
+          d="M18 6h12M24 6v6m0 30a15 15 0 1 0 0-30 15 15 0 0 0 0 30zm0-15 7-5m7-8 3-3M10 10l-3-3"
+        />
+      )}
       {name === "sparkles" && (
         <path
           {...commonProps}
@@ -48,6 +68,12 @@ export function DiagramIcon({ name, color }: { name: string; color: string }) {
         <path
           {...commonProps}
           d="M24 42a18 18 0 1 0 0-36 18 18 0 0 0 0 36zm0-36c5 5 8 11 8 18s-3 13-8 18c-5-5-8-11-8-18s3-13 8-18zM7 24h34M10 15h28M10 33h28"
+        />
+      )}
+      {name === "home" && (
+        <path
+          {...commonProps}
+          d="M8 22 24 9l16 13v20H13V24h22v18M19 42V30h10v12"
         />
       )}
       {name === "stack" && (

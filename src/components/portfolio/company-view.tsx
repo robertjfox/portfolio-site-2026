@@ -58,40 +58,8 @@ export function CompanyView({
             </a>
           </div>
 
-          <div className="mt-12 grid gap-8 lg:grid-cols-2">
-            <section
-              className={`transition-all delay-200 duration-500 ${
-                animate
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-4 opacity-0"
-              }`}
-            >
-              <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
-                Company Bio
-              </h2>
-              <p className="mt-4 text-[15px] leading-relaxed text-[#f1f1f6]">
-                {company.bio}
-              </p>
-            </section>
-
-            <section
-              className={`transition-all delay-[320ms] duration-500 ${
-                animate
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-4 opacity-0"
-              }`}
-            >
-              <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
-                About My Role
-              </h2>
-              <p className="mt-4 text-[15px] leading-relaxed text-[#f1f1f6]">
-                {company.role}
-              </p>
-            </section>
-          </div>
-
           <div
-            className={`mt-12 transition-all delay-500 duration-500 ${
+            className={`mt-12 transition-all delay-200 duration-500 ${
               animate ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
             }`}
           >
@@ -110,7 +78,7 @@ export function CompanyView({
                   }`}
                   style={{
                     transitionDelay: animate
-                      ? `${650 + index * PROJECT_STAGGER_MS}ms`
+                      ? `${350 + index * PROJECT_STAGGER_MS}ms`
                       : "0ms",
                   }}
                 >

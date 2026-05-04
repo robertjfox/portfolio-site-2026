@@ -32,3 +32,16 @@ export function renderAbout(text: string, color: string) {
     );
   });
 }
+
+export function renderLeadLabel(text: string, color: string) {
+  const match = text.match(/^([^:]+:)(\s*)([\s\S]*)$/);
+  if (!match) return renderAbout(text, color);
+
+  return (
+    <>
+      <span style={{ color, fontWeight: "bold" }}>{match[1]}</span>
+      {match[2]}
+      {renderAbout(match[3], color)}
+    </>
+  );
+}

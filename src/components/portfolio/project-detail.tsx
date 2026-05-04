@@ -4,8 +4,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Carousel, type CarouselState } from "./carousel";
-import { EcomAiSystemDiagram, FoxReportsDiagram } from "./diagrams";
-import { renderAbout } from "./render-about";
+import {
+  AvantStayBookingFeaturesDiagram,
+  AvantStayNumbersDiagram,
+  CuraitArchitectureDiagram,
+  EcomAiSystemDiagram,
+  FoxsInternalFeaturesDiagram,
+  FoxsInternalNumbersDiagram,
+  ReachRxNumbersDiagram,
+  RentroomMaintenanceDiagram,
+  RentroomNumbersDiagram,
+} from "./diagrams";
+import { renderAbout, renderLeadLabel } from "./render-about";
 import type { Company, SelectedWork } from "@/lib/works";
 import {
   getCompanyWorks,
@@ -45,6 +55,16 @@ export function ProjectDetail({
   const isSingleProjectCompany = getCompanyWorks(company.slug).length === 1;
   const backHref = isSingleProjectCompany ? "/#work" : `/work/${company.slug}`;
   const backLabel = isSingleProjectCompany ? "work" : company.name;
+  const curaitSections =
+    work.slug === "generative_ai_styling_app" ? work.sections ?? [] : [];
+  const curaitProblemSections = curaitSections.filter(
+    (section) => section.title !== "Tradeoffs",
+  );
+  const curaitTradeoffSections = curaitSections.filter(
+    (section) => section.title === "Tradeoffs",
+  );
+  const standardSections =
+    work.slug === "generative_ai_styling_app" ? [] : work.sections ?? [];
   const renderSectionMedia = (
     media: NonNullable<NonNullable<SelectedWork["sections"]>[number]["media"]>,
   ) => {
@@ -56,7 +76,7 @@ export function ProjectDetail({
     return (
       <button
         type="button"
-        className="group/image mt-5 block w-full cursor-pointer overflow-hidden rounded-lg border border-[#2a2a2a] transition-all duration-300 hover:border-white/40 hover:brightness-110 hover:shadow-[0_0_24px_rgba(255,255,255,0.12)] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
+        className="mt-5 block w-full cursor-pointer overflow-hidden rounded-lg border border-[#2a2a2a] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
         onClick={() => setCarousel({ images, index })}
       >
         <Image
@@ -65,9 +85,40 @@ export function ProjectDetail({
           width={1600}
           height={900}
           sizes="(min-width: 1024px) 1024px, 100vw"
-          className="block h-auto w-full transition duration-300 group-hover/image:scale-[1.01]"
+          className="block h-auto w-full"
         />
       </button>
+    );
+  };
+  const renderSection = (
+    section: NonNullable<SelectedWork["sections"]>[number],
+  ) => {
+    const sectionMedia = section.media ? renderSectionMedia(section.media) : null;
+    const listItems = section.body.split("\n\n").filter(Boolean);
+
+    return (
+      <section key={section.title} className="mt-8">
+        <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
+          {section.title}
+        </h2>
+        {section.media?.placement === "before" && sectionMedia}
+        {["Problem", "Tradeoffs"].includes(section.title) ? (
+          <ul className="mt-4 list-disc space-y-3 pl-5 leading-relaxed text-[#f1f1f6]">
+            {listItems.map((item) => (
+              <li key={item}>
+                {section.title === "Tradeoffs"
+                  ? renderLeadLabel(item, work.color)
+                  : renderAbout(item, work.color)}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-4 whitespace-pre-line leading-relaxed text-[#f1f1f6]">
+            {renderAbout(section.body, work.color)}
+          </p>
+        )}
+        {section.media?.placement !== "before" && sectionMedia}
+      </section>
     );
   };
 
@@ -105,6 +156,11 @@ export function ProjectDetail({
                 </span>
               ))}
             </div>
+
+            {work.slug === "analytics_dashboard" && (
+              <FoxsInternalNumbersDiagram />
+            )}
+
             <a
               href={company.website}
               target="_blank"
@@ -115,32 +171,38 @@ export function ProjectDetail({
               Visit {websiteLabel(company.website)} ↗
             </a>
 
-            <p className="mt-7 leading-relaxed text-[#f1f1f6]">
+            {work.slug === "clinical_data_backed_llm_chat" && (
+              <ReachRxNumbersDiagram />
+            )}
+            {work.slug === "internal_dashboard" && <AvantStayNumbersDiagram />}
+            {work.slug === "rental_management_web_app" && (
+              <RentroomNumbersDiagram />
+            )}
+
+            <p className="mt-7 whitespace-pre-line leading-relaxed text-[#f1f1f6]">
               {renderAbout(work.about, work.color)}
             </p>
 
-            {work.sections?.map((section) => {
-              const sectionMedia = section.media
-                ? renderSectionMedia(section.media)
-                : null;
+            {work.slug === "consumer_booking_site" && (
+              <AvantStayBookingFeaturesDiagram />
+            )}
 
-              return (
-                <section key={section.title} className="mt-8">
-                  <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
-                    {section.title}
-                  </h2>
-                  {section.media?.placement === "before" && sectionMedia}
-                  <p className="mt-4 whitespace-pre-line leading-relaxed text-[#f1f1f6]">
-                    {renderAbout(section.body, work.color)}
-                  </p>
-                  {section.media?.placement !== "before" && sectionMedia}
-                </section>
-              );
-            })}
+            {curaitProblemSections.map(renderSection)}
+            {standardSections.map(renderSection)}
 
-            {work.slug === "analytics_dashboard" && <FoxReportsDiagram />}
+            {work.slug === "generative_ai_styling_app" && (
+              <CuraitArchitectureDiagram />
+            )}
+            {curaitTradeoffSections.map(renderSection)}
+
             {work.slug === "ecom_ai_image_gen_platform" && (
               <EcomAiSystemDiagram />
+            )}
+            {work.slug === "rental_management_web_app" && (
+              <RentroomMaintenanceDiagram />
+            )}
+            {work.slug === "analytics_dashboard" && (
+              <FoxsInternalFeaturesDiagram />
             )}
 
             {galleryDiagrams.length > 0 && (
@@ -150,7 +212,7 @@ export function ProjectDetail({
                     <button
                       key={src}
                       type="button"
-                      className="group/image block w-full cursor-pointer transition duration-300 hover:brightness-110 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
+                      className="block w-full cursor-pointer focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
                       onClick={() =>
                         setCarousel({ images: galleryDiagrams, index: j })
                       }
@@ -179,7 +241,7 @@ export function ProjectDetail({
                     <button
                       key={src}
                       type="button"
-                      className="group/image relative aspect-video w-full cursor-pointer overflow-hidden rounded-lg border border-[#2a2a2a] transition-all duration-300 hover:border-white/40 hover:shadow-[0_0_24px_rgba(255,255,255,0.12)] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
+                      className="relative aspect-video w-full cursor-pointer overflow-hidden rounded-lg border border-[#2a2a2a] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
                       onClick={() =>
                         setCarousel({ images: galleryScreenshots, index: j })
                       }
@@ -189,9 +251,8 @@ export function ProjectDetail({
                         alt={`${work.name} screenshot ${j + 1}`}
                         fill
                         sizes="(min-width: 640px) 33vw, 100vw"
-                        className="rounded-lg object-cover transition duration-300 group-hover/image:scale-[1.03] group-hover/image:brightness-110"
+                        className="rounded-lg object-cover"
                       />
-                      <span className="absolute inset-0 bg-white/0 transition-colors duration-300 group-hover/image:bg-white/[0.04]" />
                     </button>
                   ))}
                 </div>
