@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Space_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { AmbientOrbs } from "@/components/ambient-orbs";
 import "./globals.css";
 
@@ -28,6 +29,7 @@ export default function RootLayout({
       <body className="relative min-h-full font-terminal bg-bg antialiased" suppressHydrationWarning>
         <AmbientOrbs />
         <div className="relative z-10">{children}</div>
+        <Analytics />
       </body>
     </html>
   );
