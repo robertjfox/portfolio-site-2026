@@ -6,7 +6,9 @@ import { useState } from "react";
 import { Carousel, type CarouselState } from "./carousel";
 import {
   AvantStayBookingFeaturesDiagram,
+  AvantStayBookingNumbersDiagram,
   AvantStayNumbersDiagram,
+  AvantStayTapeChartOutcomes,
   CuraitArchitectureDiagram,
   EcomAiSystemDiagram,
   FoxsInternalFeaturesDiagram,
@@ -20,7 +22,7 @@ import {
 import { renderAbout, renderLeadLabel } from "./render-about";
 import type { Company, SelectedWork } from "@/lib/works";
 import {
-  getCompanyWorks,
+  getNextWork,
   projectDiagrams,
   projectScreenshots,
 } from "@/lib/works";
@@ -59,9 +61,9 @@ export function ProjectDetail({
   const galleryDiagrams = diagrams.filter(
     (_, i) => !inlineMediaKeys.has(mediaKey("diagrams", i + 1)),
   );
-  const isSingleProjectCompany = getCompanyWorks(company.slug).length === 1;
-  const backHref = isSingleProjectCompany ? "/#work" : `/work/${company.slug}`;
-  const backLabel = isSingleProjectCompany ? "work" : company.name;
+  const backHref = "/#work";
+  const backLabel = "work";
+  const nextWork = getNextWork(company.slug, work.slug);
   const curaitSections =
     work.slug === "generative_ai_styling_app" ? work.sections ?? [] : [];
   const curaitProblemSections = curaitSections.filter(
@@ -113,28 +115,42 @@ export function ProjectDetail({
   ) => {
     const sectionMedia = section.media ? renderSectionMedia(section.media) : null;
     const listItems = section.body.split("\n\n").filter(Boolean);
+    const bodyContent =
+      listItems.length > 1 ? (
+        <ul className="mt-4 list-disc space-y-3 pl-5 leading-relaxed text-[#f1f1f6]">
+          {listItems.map((item) => (
+            <li key={item}>
+              {["Tradeoffs", "Challenges"].includes(section.title)
+                ? renderLeadLabel(item, work.color)
+                : renderAbout(item, work.color)}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="mt-4 whitespace-pre-line leading-relaxed text-[#f1f1f6]">
+          {renderAbout(section.body, work.color)}
+        </p>
+      );
+
+    if (section.media?.layout === "row") {
+      return (
+        <section key={section.title} className="mt-8">
+          <div className="grid gap-6 md:grid-cols-2 md:items-start [&>button]:!mt-0">
+            <div>
+              <h2 className="section-heading">{section.title}</h2>
+              {bodyContent}
+            </div>
+            {sectionMedia}
+          </div>
+        </section>
+      );
+    }
 
     return (
       <section key={section.title} className="mt-8">
-        <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
-          {section.title}
-        </h2>
+        <h2 className="section-heading">{section.title}</h2>
         {section.media?.placement === "before" && sectionMedia}
-        {["Problem", "Tradeoffs"].includes(section.title) ? (
-          <ul className="mt-4 list-disc space-y-3 pl-5 leading-relaxed text-[#f1f1f6]">
-            {listItems.map((item) => (
-              <li key={item}>
-                {section.title === "Tradeoffs"
-                  ? renderLeadLabel(item, work.color)
-                  : renderAbout(item, work.color)}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="mt-4 whitespace-pre-line leading-relaxed text-[#f1f1f6]">
-            {renderAbout(section.body, work.color)}
-          </p>
-        )}
+        {bodyContent}
         {section.media?.placement !== "before" && sectionMedia}
       </section>
     );
@@ -142,22 +158,56 @@ export function ProjectDetail({
 
   return (
     <>
-      <div className="h-screen overflow-y-auto">
+      <div
+        className="h-screen overflow-y-auto"
+        style={{ ["--section-heading-color" as string]: work.color }}
+      >
         <div className="mx-auto w-full max-w-5xl px-6 py-10 md:px-10 lg:px-12">
-          <Link
-            href={backHref}
-            className="inline-block w-fit text-text transition-colors hover:text-text-bold focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
-          >
-            ← Back to {backLabel}
-          </Link>
+          <div className="flex items-center justify-between gap-4">
+            <Link
+              href={backHref}
+              className="inline-block w-fit text-text transition-colors hover:text-text-bold focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
+            >
+              ← Back to {backLabel}
+            </Link>
+            {nextWork && (
+              <Link
+                href={`/work/${nextWork.company.slug}/${nextWork.work.slug}`}
+                className="group inline-flex items-center gap-1.5 text-right transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
+              >
+                <span className="text-text">Next Up:</span>
+                <span style={{ color: nextWork.work.color }}>
+                  {nextWork.work.name}
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="transition-transform duration-200 group-hover:translate-x-1"
+                  style={{ color: nextWork.work.color }}
+                >
+                  →
+                </span>
+              </Link>
+            )}
+          </div>
 
           <div className="mt-8 animate-fade-in">
-            <h1
-              className="text-[22px] leading-tight sm:text-[26px]"
-              style={{ color: work.color }}
-            >
-              {work.name}
-            </h1>
+            <div className="flex items-baseline justify-between gap-4">
+              <h1
+                className="text-[22px] leading-tight sm:text-[26px]"
+                style={{ color: work.color }}
+              >
+                {work.name}
+              </h1>
+              <a
+                href={company.website}
+                target="_blank"
+                rel="noreferrer"
+                className="shrink-0 font-bold underline decoration-current/40 underline-offset-4 transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
+                style={{ color: work.color }}
+              >
+                Visit {websiteLabel(company.website)} ↗
+              </a>
+            </div>
 
             <div className="mt-5 flex flex-wrap gap-2.5">
               {work.tags.map((tag) => (
@@ -175,16 +225,6 @@ export function ProjectDetail({
               ))}
             </div>
 
-            <a
-              href={company.website}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-4 block w-fit font-bold underline decoration-current/40 underline-offset-4 transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
-              style={{ color: work.color }}
-            >
-              Visit {websiteLabel(company.website)} ↗
-            </a>
-
             {work.slug === "analytics_dashboard" && (
               <FoxsInternalNumbersDiagram />
             )}
@@ -192,6 +232,10 @@ export function ProjectDetail({
               <ReachRxNumbersDiagram />
             )}
             {work.slug === "internal_dashboard" && <AvantStayNumbersDiagram />}
+            {work.slug === "consumer_booking_site" && (
+              <AvantStayBookingNumbersDiagram />
+            )}
+            {work.slug === "outfit_generation_agent" && <OutfitAgentOutcomes />}
             {work.slug === "rental_management_web_app" && (
               <RentroomNumbersDiagram />
             )}
@@ -207,18 +251,18 @@ export function ProjectDetail({
             {curaitProblemSections.map(renderSection)}
             {work.slug === "outfit_generation_agent" && outfitProblemSection && (
               <section className="mt-8">
-                <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
-                  Problem
-                </h2>
-                <div className="mt-4 grid gap-6 md:grid-cols-2 md:items-start">
-                  <ul className="list-disc space-y-3 pl-5 leading-relaxed text-[#f1f1f6]">
-                    {outfitProblemSection.body
-                      .split("\n\n")
-                      .filter(Boolean)
-                      .map((item) => (
-                        <li key={item}>{renderAbout(item, work.color)}</li>
-                      ))}
-                  </ul>
+                <div className="grid gap-6 md:grid-cols-2 md:items-start">
+                  <div>
+                    <h2 className="section-heading">Problem</h2>
+                    <ul className="mt-4 list-disc space-y-3 pl-5 leading-relaxed text-[#f1f1f6]">
+                      {outfitProblemSection.body
+                        .split("\n\n")
+                        .filter(Boolean)
+                        .map((item) => (
+                          <li key={item}>{renderAbout(item, work.color)}</li>
+                        ))}
+                    </ul>
+                  </div>
                   {screenshots[0] && (
                     <button
                       type="button"
@@ -247,7 +291,7 @@ export function ProjectDetail({
                 <div className="mt-10 grid gap-6 md:grid-cols-2 md:items-start">
                   <div className="space-y-8">
                     <section>
-                      <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
+                      <h2 className="section-heading">
                         The agent in flight
                       </h2>
                       <p className="mt-3 leading-relaxed text-[#f1f1f6]">
@@ -258,7 +302,7 @@ export function ProjectDetail({
                       </p>
                     </section>
                     <section>
-                      <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
+                      <h2 className="section-heading">
                         Generated looks ready for Meta Ads
                       </h2>
                       <p className="mt-3 leading-relaxed text-[#f1f1f6]">
@@ -268,7 +312,6 @@ export function ProjectDetail({
                         Ads from here.
                       </p>
                     </section>
-                    <OutfitAgentOutcomes />
                   </div>
                   <div className="space-y-6">
                     {screenshots[1] && (
@@ -289,26 +332,26 @@ export function ProjectDetail({
                         />
                       </button>
                     )}
-                    {screenshots[2] && (
-                      <button
-                        type="button"
-                        className="block w-full cursor-pointer overflow-hidden rounded-lg border border-[#2a2a2a] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
-                        onClick={() =>
-                          setCarousel({ images: screenshots, index: 2 })
-                        }
-                      >
-                        <Image
-                          src={screenshots[2]}
-                          alt="Saved Ads dashboard with completed shop-the-look outfits"
-                          width={1600}
-                          height={900}
-                          sizes="(min-width: 768px) 50vw, 100vw"
-                          className="block h-auto w-full"
-                        />
-                      </button>
-                    )}
                   </div>
                 </div>
+                {screenshots[2] && (
+                  <button
+                    type="button"
+                    className="mt-6 block w-full cursor-pointer overflow-hidden rounded-lg border border-[#2a2a2a] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
+                    onClick={() =>
+                      setCarousel({ images: screenshots, index: 2 })
+                    }
+                  >
+                    <Image
+                      src={screenshots[2]}
+                      alt="Completed shop-the-look outfits ready for review"
+                      width={1600}
+                      height={900}
+                      sizes="(min-width: 1024px) 1024px, 100vw"
+                      className="block h-auto w-full"
+                    />
+                  </button>
+                )}
               </>
             )}
             {standardSections.map(renderSection)}
@@ -327,6 +370,7 @@ export function ProjectDetail({
             {work.slug === "analytics_dashboard" && (
               <FoxsInternalFeaturesDiagram />
             )}
+            {work.slug === "internal_dashboard" && <AvantStayTapeChartOutcomes />}
 
             {galleryDiagrams.length > 0 && (
               <div className="mt-10">
@@ -356,9 +400,7 @@ export function ProjectDetail({
 
             {galleryScreenshots.length > 0 && (
               <div className="mt-10">
-                <p className="text-[12px] font-bold uppercase tracking-[0.2em] text-prompt">
-                  Screenshots
-                </p>
+                <p className="section-heading">Screenshots</p>
                 <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
                   {galleryScreenshots.slice(0, 3).map((src, j) => (
                     <button

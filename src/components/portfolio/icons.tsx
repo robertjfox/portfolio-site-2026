@@ -2,17 +2,19 @@ export function DiagramIcon({
   name,
   color,
   className = "h-9 w-9",
+  strokeWidth = 1.8,
 }: {
   name: string;
   color: string;
   className?: string;
+  strokeWidth?: number;
 }) {
   const commonProps = {
     fill: "none",
     stroke: "currentColor",
     strokeLinecap: "round" as const,
     strokeLinejoin: "round" as const,
-    strokeWidth: 1.8,
+    strokeWidth,
   };
 
   return (

@@ -3,44 +3,42 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { CompanyLogo } from "./company-logo";
+import { DiagramIcon } from "./icons";
 import {
   markSessionAnimationRun,
   shouldRunSessionAnimation,
 } from "@/lib/session-animation";
-import { COMPANIES, getCompanyWorks } from "@/lib/works";
+import {
+  COMPANIES,
+  getCompanyWorks,
+  PORTFOLIO_COMPANY_ORDER,
+} from "@/lib/works";
 
 const WORK_LIST_LOGO_CLASSES: Record<string, string> = {
-  foxs: "h-7 w-[165px] sm:h-8",
-  curait: "h-9 w-[180px] sm:h-10",
-  convene: "h-8 w-[190px] sm:h-9",
-  reachrx: "h-8 w-[185px] sm:h-9",
-  avantstay: "h-8 w-[195px] sm:h-9",
-  rentroom: "h-8 w-[185px] sm:h-9",
+  foxs: "h-5 w-[110px] sm:h-6",
+  curait: "h-7 w-[135px] sm:h-8",
+  convene: "h-6 w-[140px] sm:h-7",
+  reachrx: "h-6 w-[135px] sm:h-7",
+  avantstay: "h-6 w-[145px] sm:h-7",
+  rentroom: "h-6 w-[135px] sm:h-7",
 };
 
-const WORK_GROUPS = [
-  {
-    title: "Professional Work",
-    companySlugs: ["foxs", "reachrx", "avantstay", "rentroom"],
-  },
-  {
-    title: "Additional Projects",
-    companySlugs: ["curait", "convene"],
-  },
-];
-
-const TYPE_DELAY_MS = 14;
-const LOGO_TO_TEXT_DELAY_MS = 180;
-const ROW_STAGGER_MS = 420;
+const ROW_STAGGER_MS = 280;
+const CHIP_STAGGER_MS = 80;
+const LOGO_TO_CHIP_DELAY_MS = 160;
 const WORK_ANIMATION_KEY = "portfolioWorkListAnimated";
 
 function orderedCompanies() {
-  return WORK_GROUPS.flatMap((group) =>
-    group.companySlugs
-      .map((slug) => COMPANIES.find((company) => company.slug === slug))
-      .filter((company): company is (typeof COMPANIES)[number] =>
-        Boolean(company),
-      ),
+  return PORTFOLIO_COMPANY_ORDER.map((slug) =>
+    COMPANIES.find((company) => company.slug === slug),
+  ).filter((company): company is (typeof COMPANIES)[number] => Boolean(company));
+}
+
+function allChipKeys() {
+  return orderedCompanies().flatMap((company) =>
+    getCompanyWorks(company.slug).map(
+      (work) => `${company.slug}:${work.slug}`,
+    ),
   );
 }
 
@@ -49,7 +47,7 @@ export function WorkList() {
   const timers = useRef<number[]>([]);
   const [hasStarted, setHasStarted] = useState(false);
   const [visibleLogos, setVisibleLogos] = useState<Record<string, boolean>>({});
-  const [descriptions, setDescriptions] = useState<Record<string, string>>({});
+  const [visibleChips, setVisibleChips] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     if (shouldRunSessionAnimation(WORK_ANIMATION_KEY)) {
@@ -62,10 +60,8 @@ export function WorkList() {
       setVisibleLogos(
         Object.fromEntries(companies.map((company) => [company.slug, true])),
       );
-      setDescriptions(
-        Object.fromEntries(
-          companies.map((company) => [company.slug, company.tagline]),
-        ),
+      setVisibleChips(
+        Object.fromEntries(allChipKeys().map((key) => [key, true])),
       );
     }, 0);
     return () => window.clearTimeout(timer);
@@ -100,10 +96,8 @@ export function WorkList() {
         setVisibleLogos(
           Object.fromEntries(companies.map((company) => [company.slug, true])),
         );
-        setDescriptions(
-          Object.fromEntries(
-            companies.map((company) => [company.slug, company.tagline]),
-          ),
+        setVisibleChips(
+          Object.fromEntries(allChipKeys().map((key) => [key, true])),
         );
       }, 0);
       return () => window.clearTimeout(timer);
@@ -111,43 +105,27 @@ export function WorkList() {
 
     markSessionAnimationRun(WORK_ANIMATION_KEY);
 
-    const wait = (ms: number) =>
-      new Promise<void>((resolve) => {
-        const timer = window.setTimeout(resolve, ms);
-        timers.current.push(timer);
-      });
-
     let cancelled = false;
 
-    const typeDescription = async (slug: string, text: string) => {
-      for (let i = 1; i <= text.length; i += 1) {
+    companies.forEach((company, rowIndex) => {
+      const logoTimer = window.setTimeout(() => {
         if (cancelled) return;
-        setDescriptions((current) => ({
-          ...current,
-          [slug]: text.slice(0, i),
-        }));
-        await wait(TYPE_DELAY_MS);
-      }
-    };
+        setVisibleLogos((current) => ({ ...current, [company.slug]: true }));
 
-    const run = () => {
-      companies.forEach((company, index) => {
-        const startTimer = window.setTimeout(() => {
-          if (cancelled) return;
-          setVisibleLogos((current) => ({ ...current, [company.slug]: true }));
-
-          const textTimer = window.setTimeout(() => {
-            if (!cancelled) {
-              void typeDescription(company.slug, company.tagline);
-            }
-          }, LOGO_TO_TEXT_DELAY_MS);
-          timers.current.push(textTimer);
-        }, index * ROW_STAGGER_MS);
-        timers.current.push(startTimer);
-      });
-    };
-
-    run();
+        const works = getCompanyWorks(company.slug);
+        works.forEach((work, chipIndex) => {
+          const chipTimer = window.setTimeout(() => {
+            if (cancelled) return;
+            setVisibleChips((current) => ({
+              ...current,
+              [`${company.slug}:${work.slug}`]: true,
+            }));
+          }, LOGO_TO_CHIP_DELAY_MS + chipIndex * CHIP_STAGGER_MS);
+          timers.current.push(chipTimer);
+        });
+      }, rowIndex * ROW_STAGGER_MS);
+      timers.current.push(logoTimer);
+    });
 
     return () => {
       cancelled = true;
@@ -157,78 +135,73 @@ export function WorkList() {
   }, [hasStarted]);
 
   return (
-    <div ref={rootRef} className="w-full max-w-4xl">
-      <div
-        className={`space-y-14 transition-opacity duration-500 ${
+    <div ref={rootRef} className="mx-auto w-[850px]">
+      <ul
+        className={`space-y-9 transition-opacity duration-500 ${
           hasStarted ? "opacity-100" : "opacity-0"
         }`}
       >
-        {WORK_GROUPS.map((group) => (
-          <section key={group.title}>
-            <h2 className="mb-5 text-[16px] font-bold uppercase tracking-[0.2em] text-text sm:text-[20px]">
-              {group.title}
-            </h2>
-            <ul className="space-y-2">
-              {group.companySlugs.map((slug) => {
-                const company = COMPANIES.find((item) => item.slug === slug);
-                if (!company) return null;
+        {orderedCompanies().map((company) => {
+          const works = getCompanyWorks(company.slug);
+          const logoVisible = Boolean(visibleLogos[company.slug]);
 
-                const works = getCompanyWorks(company.slug);
-                const href =
-                  works.length === 1
-                    ? `/work/${company.slug}/${works[0].slug}`
-                    : `/work/${company.slug}`;
-                const visible = Boolean(visibleLogos[company.slug]);
-                const typedDescription = descriptions[company.slug] ?? "";
-
-                return (
-                  <li key={company.slug}>
-                    <Link
-                      href={href}
-                      className="group flex flex-col gap-1 rounded px-3 py-2.5 -mx-3 transition-all duration-200 hover:translate-x-1 hover:bg-white/[0.06] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current sm:grid sm:grid-cols-[260px_1fr] sm:items-center sm:gap-10"
-                    >
-                      <span
-                        className={`transition-all duration-500 ${
-                          visible
+          return (
+            <li key={company.slug}>
+              <span
+                className={`block transition-all duration-500 ${
+                  logoVisible
+                    ? "translate-y-0 opacity-100"
+                    : "translate-y-4 opacity-0"
+                }`}
+              >
+                <CompanyLogo
+                  company={company}
+                  className="text-[18px] leading-none sm:text-[20px]"
+                  imgClassName={
+                    WORK_LIST_LOGO_CLASSES[company.slug] ??
+                    "h-6 w-[140px] sm:h-7"
+                  }
+                />
+              </span>
+              <ul className="mt-3 flex flex-col gap-2">
+                {works.map((work) => {
+                  const chipKey = `${company.slug}:${work.slug}`;
+                  const chipVisible = Boolean(visibleChips[chipKey]);
+                  return (
+                    <li key={work.slug}>
+                      <Link
+                        href={`/work/${company.slug}/${work.slug}`}
+                        className={`group flex items-start gap-2.5 rounded transition-all duration-500 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current ${
+                          chipVisible
                             ? "translate-y-0 opacity-100"
-                            : "translate-y-4 opacity-0"
-                        } group-hover:translate-x-1`}
+                            : "translate-y-2 opacity-0"
+                        }`}
                       >
-                        <CompanyLogo
-                          company={company}
-                          className="text-[22px] leading-none transition-colors sm:text-[26px]"
-                          imgClassName={
-                            WORK_LIST_LOGO_CLASSES[company.slug] ??
-                            "h-7 w-[150px] sm:h-8"
-                          }
+                        <DiagramIcon
+                          name={work.icon}
+                          color={work.color}
+                          className="mt-[3px] h-[18px] w-[18px] shrink-0"
+                          strokeWidth={2.4}
                         />
-                      </span>
-                      <span className="relative flex items-center gap-2 text-[16px] leading-snug text-prompt transition-colors group-hover:text-white sm:whitespace-nowrap sm:text-[19px]">
-                        <span aria-hidden="true" className="invisible">
-                          {company.tagline}
-                        </span>
-                        <span className="absolute left-0 top-0">
-                          {typedDescription}
-                        </span>
                         <span
-                          aria-hidden="true"
-                          className={`inline-block transition-all duration-200 group-hover:translate-x-1 ${
-                            typedDescription === company.tagline
-                              ? "opacity-0 group-hover:opacity-100"
-                              : "opacity-0"
-                          }`}
+                          className="text-[15px] leading-snug underline-offset-4 group-hover:underline sm:text-[16px]"
+                          style={{ color: work.color }}
                         >
-                          →
+                          <span>{work.name}</span>
+                          <span className="text-text transition-colors duration-150 group-hover:text-current">
+                            {" "}
+                            — {work.summary}
+                          </span>
                         </span>
-                      </span>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
-        ))}
-      </div>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }

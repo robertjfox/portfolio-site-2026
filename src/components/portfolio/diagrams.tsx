@@ -3,42 +3,25 @@ import { DiagramIcon } from "./icons";
 function flowCardStyle(color: string) {
   return {
     borderColor: `${color}99`,
-    background: `linear-gradient(135deg, ${color}2f 0%, rgba(255,255,255,0.10) 42%, ${color}18 100%)`,
-    boxShadow: `inset 0 1px 0 rgba(255,255,255,0.32), inset 0 -1px 0 rgba(255,255,255,0.08), 0 22px 60px rgba(0,0,0,0.34), 0 0 34px ${color}21`,
+    borderWidth: "2px",
+    backgroundColor: `${color}14`,
   };
 }
 
 function statCardStyle(color: string) {
   return {
-    borderColor: `${color}66`,
-    background: `linear-gradient(135deg, ${color}26 0%, rgba(255,255,255,0.11) 55%, ${color}14 100%)`,
-    boxShadow:
-      "inset 0 1px 0 rgba(255,255,255,0.28), 0 16px 42px rgba(0,0,0,0.25)",
+    borderColor: `${color}99`,
+    borderWidth: "2px",
+    backgroundColor: `${color}14`,
   };
 }
 
-function FlowCardDecor({ color }: { color: string }) {
-  return (
-    <>
-      <span className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-white/60 to-transparent" />
-      <span
-        className="pointer-events-none absolute -right-12 -top-16 h-36 w-36 rounded-full blur-3xl"
-        style={{ backgroundColor: `${color}33` }}
-      />
-    </>
-  );
+function FlowCardDecor(_: { color: string }) {
+  return null;
 }
 
-function StatCardDecor({ color }: { color: string }) {
-  return (
-    <>
-      <span className="pointer-events-none absolute inset-x-3 top-0 h-px bg-gradient-to-r from-transparent via-white/55 to-transparent" />
-      <span
-        className="pointer-events-none absolute -right-8 -top-10 h-24 w-24 rounded-full blur-2xl"
-        style={{ backgroundColor: `${color}26` }}
-      />
-    </>
-  );
+function StatCardDecor(_: { color: string }) {
+  return null;
 }
 
 function FlowArrow({
@@ -55,11 +38,11 @@ function FlowArrow({
   return (
     <div
       aria-hidden="true"
-      className={`absolute -right-3 top-1/2 z-10 hidden h-0.5 w-6 -translate-y-1/2 ${visibilityClass}`}
-      style={{ backgroundColor: `${color}cc` }}
+      className={`absolute -right-4 top-1/2 z-10 hidden h-1 w-9 -translate-y-1/2 rounded-full ${visibilityClass}`}
+      style={{ backgroundColor: color }}
     >
       <span
-        className="absolute right-0 top-1/2 h-3 w-3 -translate-y-1/2 rotate-45 border-r-2 border-t-2"
+        className="absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2 rotate-45 border-r-[3px] border-t-[3px]"
         style={{ borderColor: color }}
       />
     </div>
@@ -70,13 +53,13 @@ const ECOM_AI_WORKFLOW = [
   {
     number: "01",
     icon: "cloud",
-    title: "Batch Product Uploads",
+    title: "Batch Uploads",
     body: "Product images come in as iOS photo uploads or directly from Fox's centralized image database, then get grouped by SKU for production.",
   },
   {
     number: "02",
     icon: "sparkles",
-    title: "Parallel Gemini Processing",
+    title: "Parallel Processing",
     body: "Gemini processes batches in parallel, generating front, back, on-model, and standalone product assets from the selected source imagery.",
   },
   {
@@ -107,9 +90,34 @@ const REACHRX_STATS = [
 ];
 
 const AVANTSTAY_INTERNAL_STATS = [
-  { icon: "user", value: "500+", label: "Internal users" },
+  { icon: "user", value: "100+", label: "Daily users" },
   { icon: "dollar", value: "$300M+", label: "Annual booking revenue managed" },
-  { icon: "globe", value: "2,500", label: "Homes in portfolio" },
+  { icon: "home", value: "2,500", label: "Homes in portfolio" },
+];
+
+const AVANTSTAY_TAPE_CHART_OUTCOMES = [
+  {
+    icon: "trend",
+    label: "Booking Yield",
+    value: "+5% from improved pricing control",
+  },
+  {
+    icon: "dollar",
+    label: "Cost Savings",
+    value: "$250K from migrating off Streamline",
+  },
+  {
+    icon: "user",
+    label: "CX Efficiency",
+    value: "+25% from a centralized data source",
+  },
+];
+
+const AVANTSTAY_BOOKING_STATS = [
+  { icon: "globe", value: "330K", label: "Monthly visits" },
+  { icon: "home", value: "2,500", label: "Homes" },
+  { icon: "dollar", value: "$75M", label: "Payment volume" },
+  { icon: "check", value: "30K", label: "Annual bookings" },
 ];
 
 const AVANTSTAY_BOOKING_FEATURES = [
@@ -125,12 +133,12 @@ const AVANTSTAY_BOOKING_FEATURES = [
   },
   {
     icon: "home",
-    title: "Property Detail Pages",
+    title: "Property Pages",
     body: "Gallery, amenities, house rules, room details, location, and availability modules.",
   },
   {
     icon: "dollar",
-    title: "Checkout + Payments",
+    title: "Checkout + Payment",
     body: "Booking checkout flow with Stripe and Affirm payment integrations.",
   },
   {
@@ -141,10 +149,10 @@ const AVANTSTAY_BOOKING_FEATURES = [
 ];
 
 const FOXS_INTERNAL_STATS = [
-  { icon: "user", value: "30+", label: "Daily users" },
-  { icon: "stack", value: "20K", label: "Annual SKUs" },
   { icon: "dollar", value: "$28M+", label: "Annual inventory spend informed" },
-  { icon: "globe", value: "1,000", label: "Annual vendors managed" },
+  { icon: "user", value: "30+", label: "Daily users" },
+  { icon: "globe", value: "1,000+", label: "Annual vendors managed" },
+  { icon: "stack", value: "20K+", label: "Annual SKUs" },
 ];
 
 const FOXS_INTERNAL_FEATURES = [
@@ -183,7 +191,7 @@ const CURAIT_TECHNICAL_MOVES = [
   },
   {
     icon: "parallel",
-    title: "Non-Blocking Parallelization",
+    title: "Parallelization",
     body: "Product search, filtering, ranking, and image generation run concurrently wherever possible so one slow external call does not freeze the feed.",
   },
   {
@@ -203,7 +211,7 @@ export function CuraitArchitectureDiagram() {
 
   return (
     <section className="mt-10 rounded-2xl">
-      <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
+      <h2 className="section-heading">
         System design
       </h2>
       <p className="mt-4 max-w-3xl text-[15px] leading-relaxed text-[#f1f1f6]">
@@ -227,7 +235,7 @@ export function CuraitArchitectureDiagram() {
                   color={color}
                   className="h-12 w-12"
                 />
-                <h3 className="mt-4 text-[14px] leading-tight" style={{ color }}>
+                <h3 className="mt-4 text-[14px] font-bold leading-tight" style={{ color }}>
                   {move.title}
                 </h3>
                 <p className="mt-2 text-[12px] leading-relaxed text-[#d7d7df]">
@@ -247,10 +255,7 @@ export function ReachRxNumbersDiagram() {
 
   return (
     <section className="mt-10 rounded-2xl">
-      <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
-        By the numbers
-      </h2>
-      <div className="mt-4 grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-3">
         {REACHRX_STATS.map((stat) => (
           <div
             key={stat.label}
@@ -284,10 +289,7 @@ export function AvantStayNumbersDiagram() {
 
   return (
     <section className="mt-10 rounded-2xl">
-      <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
-        By the numbers
-      </h2>
-      <div className="mt-4 grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-3">
         {AVANTSTAY_INTERNAL_STATS.map((stat) => (
           <div
             key={stat.label}
@@ -316,12 +318,76 @@ export function AvantStayNumbersDiagram() {
   );
 }
 
+export function AvantStayBookingNumbersDiagram() {
+  const color = "#6db896";
+
+  return (
+    <section className="mt-10 rounded-2xl">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {AVANTSTAY_BOOKING_STATS.map((stat) => (
+          <div
+            key={stat.label}
+            className="relative overflow-hidden rounded-2xl border p-5 backdrop-blur-2xl"
+            style={statCardStyle(color)}
+          >
+            <StatCardDecor color={color} />
+            <div className="relative flex items-start gap-3">
+              <DiagramIcon name={stat.icon} color={color} />
+              <div>
+                <p
+                  className="text-[24px] font-bold leading-none"
+                  style={{ color }}
+                >
+                  {stat.value}
+                </p>
+                <p className="mt-2 text-[12px] leading-snug text-[#d7d7df]">
+                  {stat.label}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export function AvantStayTapeChartOutcomes() {
+  const color = "#6db896";
+
+  return (
+    <section className="mt-10 rounded-2xl">
+      <h2 className="section-heading">Outcome</h2>
+      <div className="mt-4 grid gap-3 sm:grid-cols-3">
+        {AVANTSTAY_TAPE_CHART_OUTCOMES.map((outcome) => (
+          <div
+            key={outcome.label}
+            className="relative flex items-center gap-3 overflow-hidden rounded-2xl border p-4 backdrop-blur-2xl"
+            style={statCardStyle(color)}
+          >
+            <StatCardDecor color={color} />
+            <DiagramIcon name={outcome.icon} color={color} className="h-11 w-11 shrink-0" />
+            <div className="relative">
+              <p className="text-[15px] font-bold leading-none" style={{ color }}>
+                {outcome.label}
+              </p>
+              <p className="mt-2 text-[14px] leading-snug text-[#f1f1f6]">
+                {outcome.value}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export function AvantStayBookingFeaturesDiagram() {
   const color = "#6db896";
 
   return (
     <section className="mt-10 rounded-2xl">
-      <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
+      <h2 className="section-heading">
         Feature areas
       </h2>
       <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
@@ -338,7 +404,7 @@ export function AvantStayBookingFeaturesDiagram() {
                 color={color}
                 className="h-9 w-9"
               />
-              <h3 className="mt-3 text-[13px] leading-tight" style={{ color }}>
+              <h3 className="mt-3 text-[13px] font-bold leading-tight" style={{ color }}>
                 {feature.title}
               </h3>
               <p className="mt-2 text-[11px] leading-relaxed text-[#d7d7df]">
@@ -357,10 +423,7 @@ export function FoxsInternalNumbersDiagram() {
 
   return (
     <section className="mt-10 rounded-2xl">
-      <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
-        By the numbers
-      </h2>
-      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {FOXS_INTERNAL_STATS.map((stat) => (
           <div
             key={stat.label}
@@ -394,7 +457,7 @@ export function FoxsInternalFeaturesDiagram() {
 
   return (
     <section className="mt-10 rounded-2xl">
-      <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
+      <h2 className="section-heading">
         Highlighted features
       </h2>
       <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
@@ -411,7 +474,7 @@ export function FoxsInternalFeaturesDiagram() {
                 color={color}
                 className="h-9 w-9"
               />
-              <h3 className="mt-3 text-[13px] leading-tight" style={{ color }}>
+              <h3 className="mt-3 text-[13px] font-bold leading-tight" style={{ color }}>
                 {feature.title}
               </h3>
               <p className="mt-2 text-[11px] leading-relaxed text-[#d7d7df]">
@@ -430,85 +493,41 @@ export function EcomAiSystemDiagram() {
 
   return (
     <section className="mt-10 rounded-2xl">
-      <div>
-        <h2 className="text-[21px] sm:text-[26px] leading-none text-prompt">
-          Problem Statement
-        </h2>
-        <p className="mt-4 max-w-5xl text-[17px] leading-relaxed text-[#f1f1f6]">
-          Product imagery depended on a small pool of models who were expensive,
-          not always available, and slow to schedule. That created delays,
-          added production cost, and pulled the e-commerce team into manual
-          coordination work. This workflow turns vendor photos into on-brand
-          product assets roughly{" "}
-          <span className="font-bold" style={{ color }}>
-            10x faster
-          </span>{" "}
-          and about{" "}
-          <span className="font-bold" style={{ color }}>
-            100x cheaper
-          </span>
-          .
-        </p>
-      </div>
-
-      <div className="mt-8">
-        <h2 className="text-[21px] sm:text-[26px] leading-none text-prompt">
-          System Overview
-        </h2>
-      </div>
+      <h2 className="section-heading">
+        System Overview
+      </h2>
 
       <div className="mx-auto mt-7 grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {ECOM_AI_WORKFLOW.map((step, i) => (
           <div key={step.number} className="relative">
             <div
               className="relative flex h-full min-h-56 flex-col overflow-hidden rounded-2xl border p-4 backdrop-blur-2xl"
-              style={{
-                borderColor: `${color}99`,
-                background: `linear-gradient(135deg, ${color}2f 0%, rgba(255,255,255,0.10) 42%, ${color}18 100%)`,
-                boxShadow:
-                  "inset 0 1px 0 rgba(255,255,255,0.32), inset 0 -1px 0 rgba(255,255,255,0.08), 0 22px 60px rgba(0,0,0,0.34), 0 0 34px rgba(99,102,241,0.13)",
-              }}
+              style={flowCardStyle(color)}
             >
-              <span className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-white/60 to-transparent" />
-              <span
-                className="pointer-events-none absolute -right-12 -top-16 h-36 w-36 rounded-full blur-3xl"
-                style={{ backgroundColor: `${color}33` }}
-              />
+              <FlowCardDecor color={color} />
               <div className="relative flex items-start justify-between gap-3">
                 <DiagramIcon name={step.icon} color={color} />
-                <span className="text-[12px] font-bold" style={{ color }}>
+                <span className="text-[22px] font-bold leading-none" style={{ color }}>
                   {step.number}
                 </span>
               </div>
-              <h3 className="relative mt-5 text-[15px] leading-tight text-[#f4f4fb]">
+              <h3 className="relative mt-5 text-[15px] font-bold leading-tight" style={{ color }}>
                 {step.title}
               </h3>
-              <div
-                className="relative my-3 h-px w-full"
-                style={{ backgroundColor: `${color}44` }}
-              />
-              <p className="relative text-[12px] leading-relaxed text-[#d7d7df]">
+              <p className="relative mt-3 text-[12px] leading-relaxed text-[#d7d7df]">
                 {step.body}
               </p>
             </div>
-            {i < ECOM_AI_WORKFLOW.length - 1 && (
-              <div
-                aria-hidden="true"
-                className="absolute -right-4 top-1/2 z-10 hidden h-0.5 w-8 -translate-y-1/2 lg:block"
-                style={{ backgroundColor: `${color}cc` }}
-              >
-                <span
-                  className="absolute right-0 top-1/2 h-3.5 w-3.5 -translate-y-1/2 rotate-45 border-r-2 border-t-2"
-                  style={{ borderColor: color }}
-                />
-              </div>
-            )}
+            <FlowArrow
+              color={color}
+              hidden={i === ECOM_AI_WORKFLOW.length - 1}
+            />
           </div>
         ))}
       </div>
 
       <div className="mt-7">
-        <h3 className="text-[21px] sm:text-[26px] leading-none text-prompt">
+        <h3 className="section-heading">
           Outcomes
         </h3>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -516,21 +535,12 @@ export function EcomAiSystemDiagram() {
             <div
               key={outcome.label}
               className="relative flex items-center gap-3 overflow-hidden rounded-2xl border p-3 backdrop-blur-2xl"
-              style={{
-                borderColor: `${color}66`,
-                background: `linear-gradient(135deg, ${color}26 0%, rgba(255,255,255,0.11) 55%, ${color}14 100%)`,
-                boxShadow:
-                  "inset 0 1px 0 rgba(255,255,255,0.28), 0 16px 42px rgba(0,0,0,0.25)",
-              }}
+              style={statCardStyle(color)}
             >
-              <span className="pointer-events-none absolute inset-x-3 top-0 h-px bg-gradient-to-r from-transparent via-white/55 to-transparent" />
-              <span
-                className="pointer-events-none absolute -right-8 -top-10 h-24 w-24 rounded-full blur-2xl"
-                style={{ backgroundColor: `${color}26` }}
-              />
-              <DiagramIcon name={outcome.icon} color={color} />
+              <StatCardDecor color={color} />
+              <DiagramIcon name={outcome.icon} color={color} className="h-11 w-11 shrink-0" />
               <div className="relative">
-                <p className="text-[12px] leading-none" style={{ color }}>
+                <p className="text-[15px] font-bold leading-none" style={{ color }}>
                   {outcome.label}
                 </p>
                 <p className="mt-2 text-[13px] leading-snug text-[#f1f1f6]">
@@ -622,7 +632,7 @@ export function OutfitAgentSystemDiagram() {
 
   return (
     <section className="mt-10 rounded-2xl">
-      <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
+      <h2 className="section-heading">
         End-to-end pipeline
       </h2>
       <div className="mt-5 grid gap-4 md:grid-cols-4">
@@ -639,18 +649,14 @@ export function OutfitAgentSystemDiagram() {
                   color={color}
                   className="h-10 w-10"
                 />
-                <span className="text-[11px] font-bold" style={{ color }}>
+                <span className="text-[18px] font-bold leading-none" style={{ color }}>
                   {step.number}
                 </span>
               </div>
-              <h3 className="relative mt-3 text-[13px] leading-tight text-[#f4f4fb]">
+              <h3 className="relative mt-3 text-[13px] font-bold leading-tight" style={{ color }}>
                 {step.title}
               </h3>
-              <div
-                className="relative my-2 h-px w-full"
-                style={{ backgroundColor: `${color}44` }}
-              />
-              <p className="relative text-[11px] leading-relaxed text-[#d7d7df]">
+              <p className="relative mt-2 text-[11px] leading-relaxed text-[#d7d7df]">
                 {step.body}
               </p>
             </div>
@@ -664,7 +670,7 @@ export function OutfitAgentSystemDiagram() {
       </div>
 
       <div className="mt-12">
-        <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
+        <h2 className="section-heading">
           Inside the iterative outfit build
         </h2>
         <div className="mt-5 grid gap-4 md:grid-cols-4">
@@ -681,18 +687,14 @@ export function OutfitAgentSystemDiagram() {
                     color={color}
                     className="h-7 w-7"
                   />
-                  <span className="text-[11px] font-bold" style={{ color }}>
+                  <span className="text-[18px] font-bold leading-none" style={{ color }}>
                     {step.number}
                   </span>
                 </div>
-                <h3 className="relative mt-3 text-[13px] leading-tight text-[#f4f4fb]">
+                <h3 className="relative mt-3 text-[13px] font-bold leading-tight" style={{ color }}>
                   {step.title}
                 </h3>
-                <div
-                  className="relative my-2 h-px w-full"
-                  style={{ backgroundColor: `${color}44` }}
-                />
-                <p className="relative text-[11px] leading-relaxed text-[#d7d7df]">
+                <p className="relative mt-2 text-[11px] leading-relaxed text-[#d7d7df]">
                   {step.body}
                 </p>
               </div>
@@ -714,11 +716,8 @@ export function OutfitAgentOutcomes() {
   const color = "#6366f1";
 
   return (
-    <section>
-      <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
-        Outcomes
-      </h2>
-      <div className="mt-4 space-y-3">
+    <section className="mt-10 rounded-2xl">
+      <div className="grid gap-3 sm:grid-cols-3">
         {OUTFIT_AGENT_OUTCOMES.map((outcome) => (
           <div
             key={outcome.label}
@@ -726,12 +725,12 @@ export function OutfitAgentOutcomes() {
             style={statCardStyle(color)}
           >
             <StatCardDecor color={color} />
-            <DiagramIcon name={outcome.icon} color={color} />
+            <DiagramIcon name={outcome.icon} color={color} className="h-11 w-11 shrink-0" />
             <div className="relative">
-              <p className="text-[12px] leading-none" style={{ color }}>
+              <p className="text-[15px] font-bold leading-none" style={{ color }}>
                 {outcome.label}
               </p>
-              <p className="mt-2 text-[15px] leading-snug text-[#f1f1f6]">
+              <p className="mt-2 text-[14px] leading-snug text-[#f1f1f6]">
                 {outcome.value}
               </p>
             </div>
@@ -752,25 +751,25 @@ const RENTROOM_MAINTENANCE_FLOW = [
   {
     number: "01",
     icon: "user",
-    title: "Tenant Submits (iOS)",
+    title: "Tenant Submits",
     body: "Tenant snaps photos, describes the issue, and submits a maintenance ticket from the iOS app. Unit + tenant context attach automatically.",
   },
   {
     number: "02",
     icon: "file",
-    title: "Lands in Landlord Web",
+    title: "Landlord Triages",
     body: "Portfolio-wide ticket dashboard with filters by property, unit, status, and priority — including the tenant's photos and full history.",
   },
   {
     number: "03",
     icon: "message",
-    title: "Tenant Updates via SMS",
+    title: "SMS Update",
     body: "Landlord types in the web ticket. Twilio routes the update to the tenant as SMS, so follow-up communication stays tied to the same request.",
   },
   {
     number: "04",
     icon: "check",
-    title: "Thread Stays on Ticket",
+    title: "Unified Thread",
     body: "Tenant SMS replies route back into the same ticket thread. One auditable record of what was said, when, and what changed.",
   },
 ];
@@ -780,10 +779,7 @@ export function RentroomNumbersDiagram() {
 
   return (
     <section className="mt-10 rounded-2xl">
-      <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
-        By the numbers
-      </h2>
-      <div className="mt-4 grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-3">
         {RENTROOM_STATS.map((stat) => (
           <div
             key={stat.label}
@@ -818,7 +814,7 @@ export function RentroomMaintenanceDiagram() {
   return (
     <section className="mt-10 rounded-2xl">
       <div>
-        <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
+        <h2 className="section-heading">
           Maintenance flow
         </h2>
         <p className="mt-4 max-w-3xl text-[15px] leading-relaxed text-[#f1f1f6]">
@@ -837,18 +833,14 @@ export function RentroomMaintenanceDiagram() {
                 <FlowCardDecor color={color} />
                 <div className="relative flex items-start justify-between gap-3">
                   <DiagramIcon name={step.icon} color={color} />
-                  <span className="text-[12px] font-bold" style={{ color }}>
+                  <span className="text-[22px] font-bold leading-none" style={{ color }}>
                     {step.number}
                   </span>
                 </div>
-                <h3 className="relative mt-5 text-[15px] leading-tight text-[#f4f4fb]">
+                <h3 className="relative mt-5 text-[15px] font-bold leading-tight" style={{ color }}>
                   {step.title}
                 </h3>
-                <div
-                  className="relative my-3 h-px w-full"
-                  style={{ backgroundColor: `${color}44` }}
-                />
-                <p className="relative text-[12px] leading-relaxed text-[#d7d7df]">
+                <p className="relative mt-3 text-[12px] leading-relaxed text-[#d7d7df]">
                   {step.body}
                 </p>
               </div>

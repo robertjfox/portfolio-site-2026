@@ -11,15 +11,13 @@ const NAME = "Robert Fox";
 const ROLE = "Software Engineer";
 const FULL_TITLE = `${NAME}, ${ROLE}`;
 const DESCRIPTION_SENTENCES = [
-  "Software engineer and systems architect with 6+ years building production systems across property management, healthcare, and retail.",
-  "This is a collection of case studies highlighting a few of the systems I have created or contributed to.",
+  "Engineer and architect — 6+ years shipping production systems across property management, healthcare, and retail.",
 ];
 const DESCRIPTION_SEPARATOR = "\n\n";
 
 const TYPE_DELAY_MS = 28;
 const DESCRIPTION_TYPE_DELAY_MS = 12;
 const SECTION_PAUSE_MS = 320;
-const SENTENCE_PAUSE_MS = 520;
 const LANDING_ANIMATION_KEY = "portfolioLandingHeroAnimated";
 
 export function LandingHero() {
@@ -82,15 +80,6 @@ export function LandingHero() {
         "",
         DESCRIPTION_TYPE_DELAY_MS,
       );
-      await wait(SENTENCE_PAUSE_MS);
-      if (cancelled) return;
-
-      await typeText(
-        DESCRIPTION_SENTENCES[1],
-        setDescription,
-        `${DESCRIPTION_SENTENCES[0]}${DESCRIPTION_SEPARATOR}`,
-        DESCRIPTION_TYPE_DELAY_MS,
-      );
       await wait(SECTION_PAUSE_MS);
       if (!cancelled) setShowButton(true);
     };
@@ -124,11 +113,11 @@ export function LandingHero() {
         </span>
       </h1>
 
-      <p className="relative mx-auto mt-6 w-full max-w-[58rem] translate-x-4 whitespace-pre-line text-left text-text leading-relaxed sm:text-[19px]">
+      <p className="relative mx-auto mt-6 w-full max-w-[52rem] whitespace-pre-line text-center text-text leading-relaxed sm:text-[19px]">
         <span aria-hidden="true" className="invisible">
           {DESCRIPTION_SENTENCES.join(DESCRIPTION_SEPARATOR)}
         </span>
-        <span className="absolute left-0 top-0 w-full text-left">
+        <span className="absolute left-0 top-0 w-full text-center">
           {description}
         </span>
       </p>

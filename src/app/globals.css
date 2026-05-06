@@ -48,3 +48,9 @@ body {
   animation: fade-in 0.3s ease-out;
 }
 
+.section-heading {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--section-heading-color, #ffffff);
+}
+
