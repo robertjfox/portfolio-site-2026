@@ -24,7 +24,7 @@ export const SELECTED_WORKS: SelectedWork[] = [
   {
     company: "Fox's",
     name: "Outfit Generation Agent",
-    slug: "outfit_generation_agent",
+    slug: "outfit-generation-agent",
     icon: "shirt",
     color: "#6366f1",
     tags: ["Agents", "Vision Models", "Image Generation", "Shopify", "trigger.dev", "Meta Ads"],
@@ -45,7 +45,7 @@ export const SELECTED_WORKS: SelectedWork[] = [
   {
     company: "Fox's",
     name: "Product Image Platform",
-    slug: "ecom_ai_image_gen_platform",
+    slug: "product-image-platform",
     icon: "sparkles",
     color: "#6366f1",
     tags: ["Gemini", "OpenAI", "Vision Models", "Parallel Processing"],
@@ -70,7 +70,7 @@ export const SELECTED_WORKS: SelectedWork[] = [
   {
     company: "Fox's Reports",
     name: "Retail Intelligence Dashboard",
-    slug: "analytics_dashboard",
+    slug: "retail-intelligence-dashboard",
     icon: "grid",
     color: "#6366f1",
     tags: ["Next.js", "SQL Server", "Dashboards", "Integrations", "Legacy Systems", "Marketing Automation"],
@@ -95,7 +95,7 @@ export const SELECTED_WORKS: SelectedWork[] = [
   {
     company: "Curait.ai",
     name: "Generative AI Styling App",
-    slug: "generative_ai_styling_app",
+    slug: "generative-ai-styling-app",
     icon: "shirt",
     color: "#ec4899",
     tags: ["Gemini", "SerpAPI", "Vision Models", "Structured Outputs", "LLMs", "Context Refinement"],
@@ -116,7 +116,7 @@ export const SELECTED_WORKS: SelectedWork[] = [
   {
     company: "Convene",
     name: "AEC Recruiting Marketplace",
-    slug: "aec_recruiting_marketplace",
+    slug: "aec-recruiting-marketplace",
     icon: "user",
     color: "#f97316",
     tags: ["React", "TypeScript", "Node.js", "PostgreSQL", "REST APIs"],
@@ -157,7 +157,7 @@ export const SELECTED_WORKS: SelectedWork[] = [
   {
     company: "ReachRx",
     name: "Clinical AI Chat",
-    slug: "clinical_data_backed_llm_chat",
+    slug: "clinical-ai-chat",
     icon: "message",
     color: "#ef4444",
     tags: ["LLMs", "RAG", "Embeddings", "Vector Search", "Data Pipelines", "Web App", "iOS App"],
@@ -182,7 +182,7 @@ export const SELECTED_WORKS: SelectedWork[] = [
   {
     company: "AvantStay",
     name: "Bookings Tape Chart",
-    slug: "internal_dashboard",
+    slug: "bookings-tape-chart",
     icon: "trend",
     color: "#6db896",
     tags: [
@@ -228,7 +228,7 @@ export const SELECTED_WORKS: SelectedWork[] = [
   {
     company: "AvantStay",
     name: "Consumer Booking Site",
-    slug: "consumer_booking_site",
+    slug: "consumer-booking-site",
     icon: "globe",
     color: "#6db896",
     tags: ["React", "Next.js", "TypeScript", "GraphQL", "Search"],
@@ -245,7 +245,7 @@ export const SELECTED_WORKS: SelectedWork[] = [
   {
     company: "Rentroom",
     name: "Rental Management Platform",
-    slug: "rental_management_web_app",
+    slug: "rental-management-platform",
     icon: "file",
     color: "#38bdf8",
     tags: ["React", "TypeScript", "Node.js", "Swift", "Twilio"],
@@ -267,15 +267,15 @@ type ProjectAssetCounts = {
 };
 
 const PROJECT_ASSETS: Record<string, ProjectAssetCounts> = {
-  analytics_dashboard: { screenshots: 8, diagrams: 0 },
-  ecom_ai_image_gen_platform: { screenshots: 3, diagrams: 0 },
-  outfit_generation_agent: { screenshots: 3, diagrams: 0 },
-  clinical_data_backed_llm_chat: { screenshots: 6, diagrams: 1 },
-  consumer_booking_site: { screenshots: 3, diagrams: 0 },
-  internal_dashboard: { screenshots: 4, diagrams: 1 },
-  rental_management_web_app: { screenshots: 6, diagrams: 0 },
-  generative_ai_styling_app: { screenshots: 7, diagrams: 1 },
-  aec_recruiting_marketplace: { screenshots: 3, diagrams: 1 },
+  "retail-intelligence-dashboard": { screenshots: 8, diagrams: 0 },
+  "product-image-platform": { screenshots: 3, diagrams: 0 },
+  "outfit-generation-agent": { screenshots: 3, diagrams: 0 },
+  "clinical-ai-chat": { screenshots: 6, diagrams: 1 },
+  "consumer-booking-site": { screenshots: 3, diagrams: 0 },
+  "bookings-tape-chart": { screenshots: 4, diagrams: 1 },
+  "rental-management-platform": { screenshots: 6, diagrams: 0 },
+  "generative-ai-styling-app": { screenshots: 7, diagrams: 1 },
+  "aec-recruiting-marketplace": { screenshots: 3, diagrams: 1 },
 };
 
 function buildAssetUrls(
@@ -395,6 +395,18 @@ export function getCompanyWork(
   projectSlug: string,
 ): SelectedWork | undefined {
   return getCompanyWorks(companySlug).find((w) => w.slug === projectSlug);
+}
+
+export function getWork(
+  projectSlug: string,
+): { company: Company; work: SelectedWork } | undefined {
+  for (const company of COMPANIES) {
+    const work = getCompanyWorks(company.slug).find(
+      (w) => w.slug === projectSlug,
+    );
+    if (work) return { company, work };
+  }
+  return undefined;
 }
 
 export const PORTFOLIO_COMPANY_ORDER = [

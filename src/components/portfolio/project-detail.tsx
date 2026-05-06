@@ -51,42 +51,42 @@ export function ProjectDetail({
       section.media ? [mediaKey(section.media.kind, section.media.fileNumber)] : [],
     ) ?? [],
   );
-  if (work.slug === "outfit_generation_agent") {
+  if (work.slug === "outfit-generation-agent") {
     inlineMediaKeys.add(mediaKey("screenshots", 1));
     inlineMediaKeys.add(mediaKey("screenshots", 2));
     inlineMediaKeys.add(mediaKey("screenshots", 3));
   }
-  if (work.slug === "generative_ai_styling_app") {
+  if (work.slug === "generative-ai-styling-app") {
     for (let i = 1; i <= 7; i += 1) {
       inlineMediaKeys.add(mediaKey("screenshots", i));
     }
   }
-  if (work.slug === "clinical_data_backed_llm_chat") {
+  if (work.slug === "clinical-ai-chat") {
     for (let i = 1; i <= 6; i += 1) {
       inlineMediaKeys.add(mediaKey("screenshots", i));
     }
   }
-  if (work.slug === "internal_dashboard") {
+  if (work.slug === "bookings-tape-chart") {
     for (let i = 1; i <= 4; i += 1) {
       inlineMediaKeys.add(mediaKey("screenshots", i));
     }
   }
-  if (work.slug === "consumer_booking_site") {
+  if (work.slug === "consumer-booking-site") {
     for (let i = 1; i <= 3; i += 1) {
       inlineMediaKeys.add(mediaKey("screenshots", i));
     }
   }
-  if (work.slug === "rental_management_web_app") {
+  if (work.slug === "rental-management-platform") {
     for (let i = 1; i <= 6; i += 1) {
       inlineMediaKeys.add(mediaKey("screenshots", i));
     }
   }
-  if (work.slug === "ecom_ai_image_gen_platform") {
+  if (work.slug === "product-image-platform") {
     for (let i = 1; i <= 3; i += 1) {
       inlineMediaKeys.add(mediaKey("screenshots", i));
     }
   }
-  if (work.slug === "analytics_dashboard") {
+  if (work.slug === "retail-intelligence-dashboard") {
     for (let i = 1; i <= 8; i += 1) {
       inlineMediaKeys.add(mediaKey("screenshots", i));
     }
@@ -101,7 +101,7 @@ export function ProjectDetail({
   const backLabel = "work";
   const nextWork = getNextWork(company.slug, work.slug);
   const curaitSections =
-    work.slug === "generative_ai_styling_app" ? work.sections ?? [] : [];
+    work.slug === "generative-ai-styling-app" ? work.sections ?? [] : [];
   const curaitProblemSections = curaitSections.filter(
     (section) => section.title !== "Tradeoffs",
   );
@@ -109,7 +109,7 @@ export function ProjectDetail({
     (section) => section.title === "Tradeoffs",
   );
   const outfitSections =
-    work.slug === "outfit_generation_agent" ? work.sections ?? [] : [];
+    work.slug === "outfit-generation-agent" ? work.sections ?? [] : [];
   const outfitProblemSection = outfitSections.find(
     (section) => section.title === "Problem",
   );
@@ -117,12 +117,12 @@ export function ProjectDetail({
     (section) => section.title !== "Problem",
   );
   const standardSections =
-    work.slug === "generative_ai_styling_app" ||
-    work.slug === "outfit_generation_agent"
+    work.slug === "generative-ai-styling-app" ||
+    work.slug === "outfit-generation-agent"
       ? []
       : work.sections ?? [];
   const ecomChallengesIndex =
-    work.slug === "ecom_ai_image_gen_platform"
+    work.slug === "product-image-platform"
       ? standardSections.findIndex((section) => section.title === "Challenges")
       : -1;
   const ecomPreChallengeSections =
@@ -132,7 +132,7 @@ export function ProjectDetail({
   const ecomFromChallengeSections =
     ecomChallengesIndex >= 0 ? standardSections.slice(ecomChallengesIndex) : [];
   const analyticsChallengesIndex =
-    work.slug === "analytics_dashboard"
+    work.slug === "retail-intelligence-dashboard"
       ? standardSections.findIndex(
           (section) => section.title === "Challenges",
         )
@@ -232,7 +232,7 @@ export function ProjectDetail({
             </Link>
             {nextWork && (
               <Link
-                href={`/work/${nextWork.company.slug}/${nextWork.work.slug}`}
+                href={`/${nextWork.work.slug}`}
                 className="group inline-flex items-center gap-1.5 text-right transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
               >
                 <span className="text-text">Next Up:</span>
@@ -285,27 +285,27 @@ export function ProjectDetail({
               ))}
             </div>
 
-            {work.slug === "analytics_dashboard" && (
+            {work.slug === "retail-intelligence-dashboard" && (
               <FoxsInternalNumbersDiagram />
             )}
-            {work.slug === "clinical_data_backed_llm_chat" && (
+            {work.slug === "clinical-ai-chat" && (
               <ReachRxNumbersDiagram />
             )}
-            {work.slug === "internal_dashboard" && <AvantStayNumbersDiagram />}
-            {work.slug === "consumer_booking_site" && (
+            {work.slug === "bookings-tape-chart" && <AvantStayNumbersDiagram />}
+            {work.slug === "consumer-booking-site" && (
               <AvantStayBookingNumbersDiagram />
             )}
-            {work.slug === "outfit_generation_agent" && <OutfitAgentOutcomes />}
-            {work.slug === "rental_management_web_app" && (
+            {work.slug === "outfit-generation-agent" && <OutfitAgentOutcomes />}
+            {work.slug === "rental-management-platform" && (
               <RentroomNumbersDiagram />
             )}
-            {work.slug === "ecom_ai_image_gen_platform" && <EcomAiOutcomes />}
+            {work.slug === "product-image-platform" && <EcomAiOutcomes />}
 
             <p className="mt-7 whitespace-pre-line leading-relaxed text-[#f1f1f6]">
               {renderAbout(work.about, work.color)}
             </p>
 
-            {work.slug === "consumer_booking_site" && screenshots.length > 0 && (
+            {work.slug === "consumer-booking-site" && screenshots.length > 0 && (
               <div className="mt-8 flex items-start gap-2 sm:gap-3">
                 {screenshots.map((src, index) => (
                   <button
@@ -325,11 +325,11 @@ export function ProjectDetail({
               </div>
             )}
 
-            {work.slug === "consumer_booking_site" && (
+            {work.slug === "consumer-booking-site" && (
               <AvantStayBookingFeaturesDiagram />
             )}
 
-            {work.slug === "generative_ai_styling_app" &&
+            {work.slug === "generative-ai-styling-app" &&
               screenshots.length > 0 && (
                 <div className="mt-8 flex gap-2 sm:gap-3">
                   {screenshots.map((src, index) => (
@@ -352,7 +352,7 @@ export function ProjectDetail({
                 </div>
               )}
             {curaitProblemSections.map(renderSection)}
-            {work.slug === "outfit_generation_agent" && outfitProblemSection && (
+            {work.slug === "outfit-generation-agent" && outfitProblemSection && (
               <section className="mt-8">
                 <div className="grid gap-6 md:grid-cols-2 md:items-start">
                   <div>
@@ -369,7 +369,7 @@ export function ProjectDetail({
                   {screenshots[0] && (
                     <button
                       type="button"
-                      className="block w-full cursor-pointer overflow-hidden rounded-lg border border-[#2a2a2a] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
+                      className="block w-full cursor-pointer overflow-hidden rounded-lg border border-[#2a2a2a] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current md:mt-10"
                       onClick={() =>
                         setCarousel({ images: screenshots, index: 0 })
                       }
@@ -388,7 +388,7 @@ export function ProjectDetail({
               </section>
             )}
             {outfitNonProblemSections.map(renderSection)}
-            {work.slug === "outfit_generation_agent" && (
+            {work.slug === "outfit-generation-agent" && (
               <>
                 <OutfitAgentSystemDiagram />
                 <div className="mt-10 grid gap-6 md:grid-cols-2 md:items-start">
@@ -457,7 +457,7 @@ export function ProjectDetail({
                 )}
               </>
             )}
-            {work.slug === "internal_dashboard" && screenshots.length > 0 && (
+            {work.slug === "bookings-tape-chart" && screenshots.length > 0 && (
               <div className="mt-8 flex items-start gap-2 sm:gap-3">
                 {screenshots.map((src, index) => (
                   <button
@@ -476,7 +476,7 @@ export function ProjectDetail({
                 ))}
               </div>
             )}
-            {work.slug === "ecom_ai_image_gen_platform" &&
+            {work.slug === "product-image-platform" &&
               screenshots.length > 0 && (
                 <div className="mt-8 flex items-stretch gap-2 sm:gap-3">
                   {screenshots.map((src, index) => (
@@ -496,7 +496,7 @@ export function ProjectDetail({
                   ))}
                 </div>
               )}
-            {work.slug === "analytics_dashboard" && screenshots.length > 0 && (
+            {work.slug === "retail-intelligence-dashboard" && screenshots.length > 0 && (
               <div className="mt-8 space-y-2 sm:space-y-3">
                 {[
                   screenshots.slice(0, 4),
@@ -532,7 +532,7 @@ export function ProjectDetail({
                 )}
               </div>
             )}
-            {work.slug === "rental_management_web_app" &&
+            {work.slug === "rental-management-platform" &&
               screenshots.length > 0 && (
                 <div className="mt-8 flex items-stretch gap-2 sm:gap-3">
                   {[0, 1, 3, 4].map((index) =>
@@ -556,7 +556,7 @@ export function ProjectDetail({
                   )}
                 </div>
               )}
-            {work.slug === "clinical_data_backed_llm_chat" &&
+            {work.slug === "clinical-ai-chat" &&
               screenshots.length > 0 && (
                 <div className="mt-8 flex items-start gap-2 sm:gap-3">
                   {screenshots.slice(0, 5).map((src, index) => (
@@ -576,32 +576,32 @@ export function ProjectDetail({
                   ))}
                 </div>
               )}
-            {work.slug === "ecom_ai_image_gen_platform"
+            {work.slug === "product-image-platform"
               ? ecomPreChallengeSections.map(renderSection)
-              : work.slug === "analytics_dashboard"
+              : work.slug === "retail-intelligence-dashboard"
                 ? analyticsPreChallengeSections.map(renderSection)
                 : standardSections.map(renderSection)}
 
-            {work.slug === "ecom_ai_image_gen_platform" && (
+            {work.slug === "product-image-platform" && (
               <EcomAiSystemDiagram />
             )}
-            {work.slug === "ecom_ai_image_gen_platform" &&
+            {work.slug === "product-image-platform" &&
               ecomFromChallengeSections.map(renderSection)}
 
-            {work.slug === "analytics_dashboard" && (
+            {work.slug === "retail-intelligence-dashboard" && (
               <FoxsInternalFeaturesDiagram />
             )}
-            {work.slug === "analytics_dashboard" &&
+            {work.slug === "retail-intelligence-dashboard" &&
               analyticsFromChallengeSections.map(renderSection)}
 
-            {work.slug === "generative_ai_styling_app" && (
+            {work.slug === "generative-ai-styling-app" && (
               <CuraitArchitectureDiagram />
             )}
             {curaitTradeoffSections.map(renderSection)}
-            {work.slug === "rental_management_web_app" && (
+            {work.slug === "rental-management-platform" && (
               <RentroomMaintenanceDiagram />
             )}
-            {work.slug === "internal_dashboard" && <AvantStayTapeChartOutcomes />}
+            {work.slug === "bookings-tape-chart" && <AvantStayTapeChartOutcomes />}
 
             {galleryDiagrams.length > 0 && (
               <div className="mt-10">

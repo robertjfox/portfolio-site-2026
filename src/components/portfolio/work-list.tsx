@@ -170,7 +170,7 @@ export function WorkList() {
                   return (
                     <li key={work.slug}>
                       <Link
-                        href={`/work/${company.slug}/${work.slug}`}
+                        href={`/${work.slug}`}
                         className={`group flex items-start gap-2.5 rounded transition-all duration-500 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current ${
                           chipVisible
                             ? "translate-y-0 opacity-100"
