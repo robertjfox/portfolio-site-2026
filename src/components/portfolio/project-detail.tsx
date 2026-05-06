@@ -11,6 +11,8 @@ import {
   EcomAiSystemDiagram,
   FoxsInternalFeaturesDiagram,
   FoxsInternalNumbersDiagram,
+  OutfitAgentOutcomes,
+  OutfitAgentSystemDiagram,
   ReachRxNumbersDiagram,
   RentroomMaintenanceDiagram,
   RentroomNumbersDiagram,
@@ -46,6 +48,11 @@ export function ProjectDetail({
       section.media ? [mediaKey(section.media.kind, section.media.fileNumber)] : [],
     ) ?? [],
   );
+  if (work.slug === "outfit_generation_agent") {
+    inlineMediaKeys.add(mediaKey("screenshots", 1));
+    inlineMediaKeys.add(mediaKey("screenshots", 2));
+    inlineMediaKeys.add(mediaKey("screenshots", 3));
+  }
   const galleryScreenshots = screenshots.filter(
     (_, i) => !inlineMediaKeys.has(mediaKey("screenshots", i + 1)),
   );
@@ -63,8 +70,19 @@ export function ProjectDetail({
   const curaitTradeoffSections = curaitSections.filter(
     (section) => section.title === "Tradeoffs",
   );
+  const outfitSections =
+    work.slug === "outfit_generation_agent" ? work.sections ?? [] : [];
+  const outfitProblemSection = outfitSections.find(
+    (section) => section.title === "Problem",
+  );
+  const outfitNonProblemSections = outfitSections.filter(
+    (section) => section.title !== "Problem",
+  );
   const standardSections =
-    work.slug === "generative_ai_styling_app" ? [] : work.sections ?? [];
+    work.slug === "generative_ai_styling_app" ||
+    work.slug === "outfit_generation_agent"
+      ? []
+      : work.sections ?? [];
   const renderSectionMedia = (
     media: NonNullable<NonNullable<SelectedWork["sections"]>[number]["media"]>,
   ) => {
@@ -157,10 +175,6 @@ export function ProjectDetail({
               ))}
             </div>
 
-            {work.slug === "analytics_dashboard" && (
-              <FoxsInternalNumbersDiagram />
-            )}
-
             <a
               href={company.website}
               target="_blank"
@@ -171,6 +185,9 @@ export function ProjectDetail({
               Visit {websiteLabel(company.website)} ↗
             </a>
 
+            {work.slug === "analytics_dashboard" && (
+              <FoxsInternalNumbersDiagram />
+            )}
             {work.slug === "clinical_data_backed_llm_chat" && (
               <ReachRxNumbersDiagram />
             )}
@@ -188,6 +205,112 @@ export function ProjectDetail({
             )}
 
             {curaitProblemSections.map(renderSection)}
+            {work.slug === "outfit_generation_agent" && outfitProblemSection && (
+              <section className="mt-8">
+                <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
+                  Problem
+                </h2>
+                <div className="mt-4 grid gap-6 md:grid-cols-2 md:items-start">
+                  <ul className="list-disc space-y-3 pl-5 leading-relaxed text-[#f1f1f6]">
+                    {outfitProblemSection.body
+                      .split("\n\n")
+                      .filter(Boolean)
+                      .map((item) => (
+                        <li key={item}>{renderAbout(item, work.color)}</li>
+                      ))}
+                  </ul>
+                  {screenshots[0] && (
+                    <button
+                      type="button"
+                      className="block w-full cursor-pointer overflow-hidden rounded-lg border border-[#2a2a2a] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
+                      onClick={() =>
+                        setCarousel({ images: screenshots, index: 0 })
+                      }
+                    >
+                      <Image
+                        src={screenshots[0]}
+                        alt="Shop The Look carousel on foxs.com"
+                        width={1600}
+                        height={900}
+                        sizes="(min-width: 768px) 50vw, 100vw"
+                        className="block h-auto w-full"
+                      />
+                    </button>
+                  )}
+                </div>
+              </section>
+            )}
+            {outfitNonProblemSections.map(renderSection)}
+            {work.slug === "outfit_generation_agent" && (
+              <>
+                <OutfitAgentSystemDiagram />
+                <div className="mt-10 grid gap-6 md:grid-cols-2 md:items-start">
+                  <div className="space-y-8">
+                    <section>
+                      <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
+                        The agent in flight
+                      </h2>
+                      <p className="mt-3 leading-relaxed text-[#f1f1f6]">
+                        Per-category progress streams in live: text shortlist,
+                        vision grid analysis, selected product. Once every
+                        category is filled, gpt-image-2 renders the flatlay and
+                        on-model shot.
+                      </p>
+                    </section>
+                    <section>
+                      <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
+                        Generated looks ready for Meta Ads
+                      </h2>
+                      <p className="mt-3 leading-relaxed text-[#f1f1f6]">
+                        Each completed outfit lands in Saved Ads with its
+                        product strip, flatlay, and on-figure shot. The team
+                        reviews, edits, and pushes to Microsoft Teams or Meta
+                        Ads from here.
+                      </p>
+                    </section>
+                    <OutfitAgentOutcomes />
+                  </div>
+                  <div className="space-y-6">
+                    {screenshots[1] && (
+                      <button
+                        type="button"
+                        className="block w-full cursor-pointer overflow-hidden rounded-lg border border-[#2a2a2a] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
+                        onClick={() =>
+                          setCarousel({ images: screenshots, index: 1 })
+                        }
+                      >
+                        <Image
+                          src={screenshots[1]}
+                          alt="Flatlay Agent dashboard running through outfit categories"
+                          width={1600}
+                          height={900}
+                          sizes="(min-width: 768px) 50vw, 100vw"
+                          className="block h-auto w-full"
+                        />
+                      </button>
+                    )}
+                    {screenshots[2] && (
+                      <button
+                        type="button"
+                        className="block w-full cursor-pointer overflow-hidden rounded-lg border border-[#2a2a2a] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
+                        onClick={() =>
+                          setCarousel({ images: screenshots, index: 2 })
+                        }
+                      >
+                        <Image
+                          src={screenshots[2]}
+                          alt="Saved Ads dashboard with completed shop-the-look outfits"
+                          width={1600}
+                          height={900}
+                          sizes="(min-width: 768px) 50vw, 100vw"
+                          className="block h-auto w-full"
+                        />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </>
+            )}
             {standardSections.map(renderSection)}
 
             {work.slug === "generative_ai_styling_app" && (

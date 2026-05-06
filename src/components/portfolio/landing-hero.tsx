@@ -106,19 +106,21 @@ export function LandingHero() {
 
   return (
     <div className="flex w-full flex-col items-center">
-      <h1 className="relative min-h-[32px] w-full text-center text-prompt text-[26px] leading-[1.1] tracking-tight sm:min-h-[39px] sm:text-[32px] lg:min-h-[46px] lg:text-[38px]">
-        <span aria-hidden="true" className="invisible whitespace-nowrap">
-          {FULL_TITLE}
-        </span>
-        <span className="absolute inset-x-0 top-0 whitespace-nowrap text-center">
-          {name}
-          {role && (
-            <>
-              <span>, </span>
-              <span>{role}</span>
-            </>
-          )}
-          {!showButton && <span className="animate-pulse">_</span>}
+      <h1 className="min-h-[32px] w-full text-center text-prompt text-[26px] leading-[1.1] tracking-tight sm:min-h-[39px] sm:text-[32px] lg:min-h-[46px] lg:text-[38px]">
+        <span className="relative inline-block whitespace-nowrap text-left">
+          <span aria-hidden="true" className="invisible">
+            {FULL_TITLE}
+          </span>
+          <span className="absolute inset-0">
+            {name}
+            {role && (
+              <>
+                <span>, </span>
+                <span>{role}</span>
+              </>
+            )}
+            {!showButton && <span className="animate-pulse">_</span>}
+          </span>
         </span>
       </h1>
 

@@ -44,19 +44,22 @@ function StatCardDecor({ color }: { color: string }) {
 function FlowArrow({
   color,
   hidden,
+  breakpoint = "lg",
 }: {
   color: string;
   hidden?: boolean;
+  breakpoint?: "md" | "lg";
 }) {
   if (hidden) return null;
+  const visibilityClass = breakpoint === "md" ? "md:block" : "lg:block";
   return (
     <div
       aria-hidden="true"
-      className="absolute -right-4 top-1/2 z-10 hidden h-0.5 w-8 -translate-y-1/2 lg:block"
+      className={`absolute -right-3 top-1/2 z-10 hidden h-0.5 w-6 -translate-y-1/2 ${visibilityClass}`}
       style={{ backgroundColor: `${color}cc` }}
     >
       <span
-        className="absolute right-0 top-1/2 h-3.5 w-3.5 -translate-y-1/2 rotate-45 border-r-2 border-t-2"
+        className="absolute right-0 top-1/2 h-3 w-3 -translate-y-1/2 rotate-45 border-r-2 border-t-2"
         style={{ borderColor: color }}
       />
     </div>
@@ -537,6 +540,203 @@ export function EcomAiSystemDiagram() {
             </div>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+const OUTFIT_AGENT_FLOW = [
+  {
+    number: "01",
+    icon: "cloud",
+    title: "Daily Shopify Scan",
+    body: "Scans foxs.com daily for newly published items. Each becomes the seed for an outfit concept.",
+  },
+  {
+    number: "02",
+    icon: "parallel",
+    title: "Iterative Outfit Build",
+    body: "Per category: an LLM text pass narrows to 16, then a vision pass over a grid picks the winner.",
+  },
+  {
+    number: "03",
+    icon: "sparkles",
+    title: "Image Generation",
+    body: "Selected products go to gpt-image-2 — a flatlay and an on-figure model shot per look.",
+  },
+  {
+    number: "04",
+    icon: "message",
+    title: "Review + Publish",
+    body: "Each outfit posts to Microsoft Teams. The team edits in the dashboard and pushes to Meta Ads.",
+  },
+];
+
+const OUTFIT_ITERATIVE_LOOP = [
+  {
+    number: "01",
+    icon: "stack",
+    title: "Category Candidates",
+    body: "Every in-stock SKU for the next slot — say ~300 dresses or ~200 shoes.",
+  },
+  {
+    number: "02",
+    icon: "search",
+    title: "Text-Pass Shortlist",
+    body: "An LLM scores candidates on metadata against the concept and prior picks. Top 16 advance.",
+  },
+  {
+    number: "03",
+    icon: "grid",
+    title: "Single-Call Vision Grid",
+    body: "The 16 finalists composite into one 4×4 grid. One vision call picks the winner — not sixteen.",
+  },
+  {
+    number: "04",
+    icon: "parallel",
+    title: "Append + Recurse",
+    body: "The winner joins the outfit and feeds the next category. Loops until every slot is filled.",
+  },
+];
+
+const OUTFIT_AGENT_OUTCOMES = [
+  {
+    icon: "sparkles",
+    label: "Concepts",
+    value: "5,000+ outfit concepts per year",
+  },
+  {
+    icon: "timer",
+    label: "Time saved",
+    value: "~2,500 human hours per year",
+  },
+  {
+    icon: "trend",
+    label: "Ad volume",
+    value: "10x more Meta Ads — more shots at engaging content",
+  },
+];
+
+export function OutfitAgentSystemDiagram() {
+  const color = "#6366f1";
+
+  return (
+    <section className="mt-10 rounded-2xl">
+      <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
+        End-to-end pipeline
+      </h2>
+      <div className="mt-5 grid gap-4 md:grid-cols-4">
+        {OUTFIT_AGENT_FLOW.map((step, i) => (
+          <div key={step.number} className="relative">
+            <div
+              className="relative flex h-full flex-col overflow-hidden rounded-xl border p-3 backdrop-blur-2xl"
+              style={flowCardStyle(color)}
+            >
+              <FlowCardDecor color={color} />
+              <div className="relative flex items-start justify-between gap-2">
+                <DiagramIcon
+                  name={step.icon}
+                  color={color}
+                  className="h-10 w-10"
+                />
+                <span className="text-[11px] font-bold" style={{ color }}>
+                  {step.number}
+                </span>
+              </div>
+              <h3 className="relative mt-3 text-[13px] leading-tight text-[#f4f4fb]">
+                {step.title}
+              </h3>
+              <div
+                className="relative my-2 h-px w-full"
+                style={{ backgroundColor: `${color}44` }}
+              />
+              <p className="relative text-[11px] leading-relaxed text-[#d7d7df]">
+                {step.body}
+              </p>
+            </div>
+            <FlowArrow
+              color={color}
+              breakpoint="md"
+              hidden={i === OUTFIT_AGENT_FLOW.length - 1}
+            />
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-12">
+        <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
+          Inside the iterative outfit build
+        </h2>
+        <div className="mt-5 grid gap-4 md:grid-cols-4">
+          {OUTFIT_ITERATIVE_LOOP.map((step, i) => (
+            <div key={step.number} className="relative">
+              <div
+                className="relative flex h-full flex-col overflow-hidden rounded-xl border p-3 backdrop-blur-2xl"
+                style={flowCardStyle(color)}
+              >
+                <FlowCardDecor color={color} />
+                <div className="relative flex items-start justify-between gap-2">
+                  <DiagramIcon
+                    name={step.icon}
+                    color={color}
+                    className="h-7 w-7"
+                  />
+                  <span className="text-[11px] font-bold" style={{ color }}>
+                    {step.number}
+                  </span>
+                </div>
+                <h3 className="relative mt-3 text-[13px] leading-tight text-[#f4f4fb]">
+                  {step.title}
+                </h3>
+                <div
+                  className="relative my-2 h-px w-full"
+                  style={{ backgroundColor: `${color}44` }}
+                />
+                <p className="relative text-[11px] leading-relaxed text-[#d7d7df]">
+                  {step.body}
+                </p>
+              </div>
+              <FlowArrow
+                color={color}
+                breakpoint="md"
+                hidden={i === OUTFIT_ITERATIVE_LOOP.length - 1}
+              />
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
+export function OutfitAgentOutcomes() {
+  const color = "#6366f1";
+
+  return (
+    <section>
+      <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-text">
+        Outcomes
+      </h2>
+      <div className="mt-4 space-y-3">
+        {OUTFIT_AGENT_OUTCOMES.map((outcome) => (
+          <div
+            key={outcome.label}
+            className="relative flex items-center gap-3 overflow-hidden rounded-2xl border p-4 backdrop-blur-2xl"
+            style={statCardStyle(color)}
+          >
+            <StatCardDecor color={color} />
+            <DiagramIcon name={outcome.icon} color={color} />
+            <div className="relative">
+              <p className="text-[12px] leading-none" style={{ color }}>
+                {outcome.label}
+              </p>
+              <p className="mt-2 text-[15px] leading-snug text-[#f1f1f6]">
+                {outcome.value}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

@@ -59,6 +59,28 @@ export const SELECTED_WORKS: SelectedWork[] = [
       "AI-powered product imagery workflow used daily by a {5-person} e-commerce team. Transforms vendor product photos into e-commerce-ready assets for foxs.com, replacing outsourced model photography and eliminating {~$100K} in annual production cost.",
   },
   {
+    company: "Fox's",
+    name: "Outfit Generation Agent",
+    slug: "outfit_generation_agent",
+    icon: "shirt",
+    color: "#6366f1",
+    tags: ["Agents", "Vision Models", "Image Generation", "Shopify", "trigger.dev", "Meta Ads"],
+    summary:
+      "Daily agentic workflow that builds shop-the-look outfits around newly published Shopify products and routes them to the e-commerce team for review and ad publishing.",
+    about:
+      "{Shop-the-looks} are one of Fox's primary marketing units, running on foxs.com and in Meta Ads. Each look pairs a new arrival with a complete outfit so customers can buy the full set in one place.",
+    sections: [
+      {
+        title: "Problem",
+        body: "Each shop-the-look takes meaningful merchandiser time to assemble — picking the anchor, deciding on a concept, and hand-picking compatible items category by category.\n\nWith {~1,500} in-stock SKUs and dozens of new arrivals weekly, the decision space for any single outfit is enormous, and the team can only ever ship a fraction of viable looks.",
+      },
+      {
+        title: "Solution",
+        body: "An agentic workflow running on {trigger.dev} anchors on each newly published Shopify item, iteratively builds a full outfit from the recent in-stock catalog, renders it as imagery, and routes it to the e-commerce team.",
+      },
+    ],
+  },
+  {
     company: "Curait.ai",
     name: "Generative AI Styling App",
     slug: "generative_ai_styling_app",
@@ -225,6 +247,7 @@ type ProjectAssetCounts = {
 const PROJECT_ASSETS: Record<string, ProjectAssetCounts> = {
   analytics_dashboard: { screenshots: 3, diagrams: 0 },
   ecom_ai_image_gen_platform: { screenshots: 3, diagrams: 0 },
+  outfit_generation_agent: { screenshots: 3, diagrams: 0 },
   clinical_data_backed_llm_chat: { screenshots: 3, diagrams: 1 },
   consumer_booking_site: { screenshots: 3, diagrams: 0 },
   internal_dashboard: { screenshots: 4, diagrams: 1 },
