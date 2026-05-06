@@ -61,6 +61,10 @@ export const SELECTED_WORKS: SelectedWork[] = [
         title: "Solution",
         body: "AI workflow that converts vendor photos into on-brand product assets.\n\nFront, back, on-model, and standalone variants generated in parallel.\n\nRoughly {10x faster} and {~100x cheaper} than outsourced model shoots.",
       },
+      {
+        title: "Challenges",
+        body: "Cohesive, consistent outputs: a structured prompt library and a precategorization step that picks the right prompt per item.\n\nModel drift: a model generator and library to manage and iterate on AI models as they shift.\n\nHuman refinement: not perfect on the first pass — a quick interface to retry and apply prompted edits to specific outputs.",
+      },
     ],
   },
   {
@@ -83,8 +87,8 @@ export const SELECTED_WORKS: SelectedWork[] = [
         body: "I built a centralized business intelligence platform on top of the existing retail data stack. It brings purchase history, vendor data, warehouse activity, store-level invoices, SKU performance, pricing, sell-through, and product images into one internal system. The result is a single operating layer for buying, executive reporting, warehouse workflows, and e-commerce production.",
       },
       {
-        title: "Buying Workflow",
-        body: "The system helps a team of {9} buyers manage roughly {1,000} annual vendors and make decisions that inform more than {$28M} in annual inventory spend. It tracks {20K} unique SKUs, each with sell-through, pricing, inventory, vendor, and image data, so buyers can make decisions from one place instead of stitching context together from reports and local folders.",
+        title: "Challenges",
+        body: "Legacy systems and reports: coming in and understanding a {20+ year} old codebase with hundreds of deprecated tables and concepts.\n\nSelf direction and prioritization: mapping which changes create the highest leverage for driving ROI and value creation across the business.\n\nUser adoption: working closely with teams in stores, office, and warehouse to train new systems and iterate feedback into changes.",
       },
     ],
   },
@@ -263,14 +267,14 @@ type ProjectAssetCounts = {
 };
 
 const PROJECT_ASSETS: Record<string, ProjectAssetCounts> = {
-  analytics_dashboard: { screenshots: 3, diagrams: 0 },
+  analytics_dashboard: { screenshots: 8, diagrams: 0 },
   ecom_ai_image_gen_platform: { screenshots: 3, diagrams: 0 },
   outfit_generation_agent: { screenshots: 3, diagrams: 0 },
-  clinical_data_backed_llm_chat: { screenshots: 3, diagrams: 1 },
+  clinical_data_backed_llm_chat: { screenshots: 6, diagrams: 1 },
   consumer_booking_site: { screenshots: 3, diagrams: 0 },
   internal_dashboard: { screenshots: 4, diagrams: 1 },
   rental_management_web_app: { screenshots: 6, diagrams: 0 },
-  generative_ai_styling_app: { screenshots: 0, diagrams: 1 },
+  generative_ai_styling_app: { screenshots: 7, diagrams: 1 },
   aec_recruiting_marketplace: { screenshots: 3, diagrams: 1 },
 };
 

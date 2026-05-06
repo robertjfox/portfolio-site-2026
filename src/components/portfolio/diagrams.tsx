@@ -78,9 +78,9 @@ const ECOM_AI_WORKFLOW = [
 
 const ECOM_AI_OUTCOMES = [
   { icon: "user", label: "Team", value: "5-person daily workflow" },
-  { icon: "dollar", label: "Cost", value: "~100x cheaper production flow" },
-  { icon: "trend", label: "Speed", value: "~10x faster imagery turnaround" },
-  { icon: "globe", label: "Scale", value: "5K annual SKUs supported" },
+  { icon: "dollar", label: "Cost", value: "$100K+ annual cost saved" },
+  { icon: "trend", label: "Time Saved", value: "2000+ hours a year" },
+  { icon: "globe", label: "Scale", value: "5K+ annual SKUs" },
 ];
 
 const REACHRX_STATS = [
@@ -526,30 +526,34 @@ export function EcomAiSystemDiagram() {
         ))}
       </div>
 
-      <div className="mt-7">
-        <h3 className="section-heading">
-          Outcomes
-        </h3>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {ECOM_AI_OUTCOMES.map((outcome) => (
-            <div
-              key={outcome.label}
-              className="relative flex items-center gap-3 overflow-hidden rounded-2xl border p-3 backdrop-blur-2xl"
-              style={statCardStyle(color)}
-            >
-              <StatCardDecor color={color} />
-              <DiagramIcon name={outcome.icon} color={color} className="h-11 w-11 shrink-0" />
-              <div className="relative">
-                <p className="text-[15px] font-bold leading-none" style={{ color }}>
-                  {outcome.label}
-                </p>
-                <p className="mt-2 text-[13px] leading-snug text-[#f1f1f6]">
-                  {outcome.value}
-                </p>
-              </div>
+    </section>
+  );
+}
+
+export function EcomAiOutcomes() {
+  const color = "#6366f1";
+
+  return (
+    <section className="mt-10 rounded-2xl">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {ECOM_AI_OUTCOMES.map((outcome) => (
+          <div
+            key={outcome.label}
+            className="relative flex items-center gap-3 overflow-hidden rounded-2xl border p-4 backdrop-blur-2xl"
+            style={statCardStyle(color)}
+          >
+            <StatCardDecor color={color} />
+            <DiagramIcon name={outcome.icon} color={color} className="h-11 w-11 shrink-0" />
+            <div className="relative">
+              <p className="text-[15px] font-bold leading-none" style={{ color }}>
+                {outcome.label}
+              </p>
+              <p className="mt-2 text-[14px] leading-snug text-[#f1f1f6]">
+                {outcome.value}
+              </p>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </section>
   );

@@ -11,7 +11,7 @@ const NAME = "Robert Fox";
 const ROLE = "Software Engineer";
 const FULL_TITLE = `${NAME}, ${ROLE}`;
 const DESCRIPTION_SENTENCES = [
-  "Engineer and architect — 6+ years shipping production systems across property management, healthcare, and retail.",
+  "Engineer and architect — 6+ years shipping production systems\nacross property management, healthcare, and retail.",
 ];
 const DESCRIPTION_SEPARATOR = "\n\n";
 
@@ -96,7 +96,7 @@ export function LandingHero() {
   return (
     <div className="flex w-full flex-col items-center">
       <h1 className="min-h-[32px] w-full text-center text-prompt text-[26px] leading-[1.1] tracking-tight sm:min-h-[39px] sm:text-[32px] lg:min-h-[46px] lg:text-[38px]">
-        <span className="relative inline-block whitespace-nowrap text-left">
+        <span className="relative inline-block whitespace-nowrap text-justify">
           <span aria-hidden="true" className="invisible">
             {FULL_TITLE}
           </span>
@@ -113,12 +113,10 @@ export function LandingHero() {
         </span>
       </h1>
 
-      <p className="relative mx-auto mt-6 w-full max-w-[52rem] whitespace-pre-line text-center text-text leading-relaxed sm:text-[19px]">
+      <p className="mx-auto mt-6 w-full max-w-[48rem] whitespace-pre-line text-center text-text leading-relaxed sm:text-[19px]">
+        {description}
         <span aria-hidden="true" className="invisible">
-          {DESCRIPTION_SENTENCES.join(DESCRIPTION_SEPARATOR)}
-        </span>
-        <span className="absolute left-0 top-0 w-full text-center">
-          {description}
+          {DESCRIPTION_SENTENCES.join(DESCRIPTION_SEPARATOR).slice(description.length)}
         </span>
       </p>
 

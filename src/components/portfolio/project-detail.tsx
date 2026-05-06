@@ -10,6 +10,7 @@ import {
   AvantStayNumbersDiagram,
   AvantStayTapeChartOutcomes,
   CuraitArchitectureDiagram,
+  EcomAiOutcomes,
   EcomAiSystemDiagram,
   FoxsInternalFeaturesDiagram,
   FoxsInternalNumbersDiagram,
@@ -55,6 +56,41 @@ export function ProjectDetail({
     inlineMediaKeys.add(mediaKey("screenshots", 2));
     inlineMediaKeys.add(mediaKey("screenshots", 3));
   }
+  if (work.slug === "generative_ai_styling_app") {
+    for (let i = 1; i <= 7; i += 1) {
+      inlineMediaKeys.add(mediaKey("screenshots", i));
+    }
+  }
+  if (work.slug === "clinical_data_backed_llm_chat") {
+    for (let i = 1; i <= 6; i += 1) {
+      inlineMediaKeys.add(mediaKey("screenshots", i));
+    }
+  }
+  if (work.slug === "internal_dashboard") {
+    for (let i = 1; i <= 4; i += 1) {
+      inlineMediaKeys.add(mediaKey("screenshots", i));
+    }
+  }
+  if (work.slug === "consumer_booking_site") {
+    for (let i = 1; i <= 3; i += 1) {
+      inlineMediaKeys.add(mediaKey("screenshots", i));
+    }
+  }
+  if (work.slug === "rental_management_web_app") {
+    for (let i = 1; i <= 6; i += 1) {
+      inlineMediaKeys.add(mediaKey("screenshots", i));
+    }
+  }
+  if (work.slug === "ecom_ai_image_gen_platform") {
+    for (let i = 1; i <= 3; i += 1) {
+      inlineMediaKeys.add(mediaKey("screenshots", i));
+    }
+  }
+  if (work.slug === "analytics_dashboard") {
+    for (let i = 1; i <= 8; i += 1) {
+      inlineMediaKeys.add(mediaKey("screenshots", i));
+    }
+  }
   const galleryScreenshots = screenshots.filter(
     (_, i) => !inlineMediaKeys.has(mediaKey("screenshots", i + 1)),
   );
@@ -85,6 +121,30 @@ export function ProjectDetail({
     work.slug === "outfit_generation_agent"
       ? []
       : work.sections ?? [];
+  const ecomChallengesIndex =
+    work.slug === "ecom_ai_image_gen_platform"
+      ? standardSections.findIndex((section) => section.title === "Challenges")
+      : -1;
+  const ecomPreChallengeSections =
+    ecomChallengesIndex >= 0
+      ? standardSections.slice(0, ecomChallengesIndex)
+      : standardSections;
+  const ecomFromChallengeSections =
+    ecomChallengesIndex >= 0 ? standardSections.slice(ecomChallengesIndex) : [];
+  const analyticsChallengesIndex =
+    work.slug === "analytics_dashboard"
+      ? standardSections.findIndex(
+          (section) => section.title === "Challenges",
+        )
+      : -1;
+  const analyticsPreChallengeSections =
+    analyticsChallengesIndex >= 0
+      ? standardSections.slice(0, analyticsChallengesIndex)
+      : standardSections;
+  const analyticsFromChallengeSections =
+    analyticsChallengesIndex >= 0
+      ? standardSections.slice(analyticsChallengesIndex)
+      : [];
   const renderSectionMedia = (
     media: NonNullable<NonNullable<SelectedWork["sections"]>[number]["media"]>,
   ) => {
@@ -239,15 +299,58 @@ export function ProjectDetail({
             {work.slug === "rental_management_web_app" && (
               <RentroomNumbersDiagram />
             )}
+            {work.slug === "ecom_ai_image_gen_platform" && <EcomAiOutcomes />}
 
             <p className="mt-7 whitespace-pre-line leading-relaxed text-[#f1f1f6]">
               {renderAbout(work.about, work.color)}
             </p>
 
+            {work.slug === "consumer_booking_site" && screenshots.length > 0 && (
+              <div className="mt-8 flex items-start gap-2 sm:gap-3">
+                {screenshots.map((src, index) => (
+                  <button
+                    key={src}
+                    type="button"
+                    className="block flex-1 cursor-pointer overflow-hidden rounded-lg border border-[#2a2a2a] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
+                    onClick={() => setCarousel({ images: screenshots, index })}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={src}
+                      alt={`AvantStay booking site screenshot ${index + 1}`}
+                      className="block h-auto w-full"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+
             {work.slug === "consumer_booking_site" && (
               <AvantStayBookingFeaturesDiagram />
             )}
 
+            {work.slug === "generative_ai_styling_app" &&
+              screenshots.length > 0 && (
+                <div className="mt-8 flex gap-2 sm:gap-3">
+                  {screenshots.map((src, index) => (
+                    <button
+                      key={src}
+                      type="button"
+                      className="block flex-1 cursor-pointer overflow-hidden rounded-lg border border-[#2a2a2a] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
+                      onClick={() => setCarousel({ images: screenshots, index })}
+                    >
+                      <Image
+                        src={src}
+                        alt={`Curait screenshot ${index + 1}`}
+                        width={342}
+                        height={740}
+                        sizes="(min-width: 768px) 14vw, 28vw"
+                        className="block h-auto w-full"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
             {curaitProblemSections.map(renderSection)}
             {work.slug === "outfit_generation_agent" && outfitProblemSection && (
               <section className="mt-8">
@@ -354,21 +457,149 @@ export function ProjectDetail({
                 )}
               </>
             )}
-            {standardSections.map(renderSection)}
+            {work.slug === "internal_dashboard" && screenshots.length > 0 && (
+              <div className="mt-8 flex items-start gap-2 sm:gap-3">
+                {screenshots.map((src, index) => (
+                  <button
+                    key={src}
+                    type="button"
+                    className="block flex-1 cursor-pointer overflow-hidden rounded-lg border border-[#2a2a2a] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
+                    onClick={() => setCarousel({ images: screenshots, index })}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={src}
+                      alt={`Bookings Tape Chart screenshot ${index + 1}`}
+                      className="block h-auto w-full"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+            {work.slug === "ecom_ai_image_gen_platform" &&
+              screenshots.length > 0 && (
+                <div className="mt-8 flex items-stretch gap-2 sm:gap-3">
+                  {screenshots.map((src, index) => (
+                    <button
+                      key={src}
+                      type="button"
+                      className="relative flex-1 aspect-video cursor-pointer overflow-hidden rounded-lg border border-[#2a2a2a] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
+                      onClick={() => setCarousel({ images: screenshots, index })}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={src}
+                        alt={`${work.name} screenshot ${index + 1}`}
+                        className="absolute inset-0 h-full w-full object-cover object-top"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
+            {work.slug === "analytics_dashboard" && screenshots.length > 0 && (
+              <div className="mt-8 space-y-2 sm:space-y-3">
+                {[
+                  screenshots.slice(0, 4),
+                  screenshots.slice(4, 8),
+                ].map((row, rowIndex) =>
+                  row.length > 0 ? (
+                    <div
+                      key={rowIndex}
+                      className="flex items-stretch gap-2 sm:gap-3"
+                    >
+                      {row.map((src, i) => {
+                        const index = rowIndex * 4 + i;
+                        return (
+                          <button
+                            key={src}
+                            type="button"
+                            className="relative flex-1 aspect-video cursor-pointer overflow-hidden rounded-lg border border-[#2a2a2a] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
+                            onClick={() =>
+                              setCarousel({ images: screenshots, index })
+                            }
+                          >
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={src}
+                              alt={`${work.name} screenshot ${index + 1}`}
+                              className="absolute inset-0 h-full w-full object-cover object-top"
+                            />
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ) : null,
+                )}
+              </div>
+            )}
+            {work.slug === "rental_management_web_app" &&
+              screenshots.length > 0 && (
+                <div className="mt-8 flex items-stretch gap-2 sm:gap-3">
+                  {[0, 1, 3, 4].map((index) =>
+                    screenshots[index] ? (
+                      <button
+                        key={screenshots[index]}
+                        type="button"
+                        className="relative flex-1 aspect-video cursor-pointer overflow-hidden rounded-lg border border-[#2a2a2a] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
+                        onClick={() =>
+                          setCarousel({ images: screenshots, index })
+                        }
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={screenshots[index]}
+                          alt={`Rentroom screenshot ${index + 1}`}
+                          className="absolute inset-0 h-full w-full object-cover object-top"
+                        />
+                      </button>
+                    ) : null,
+                  )}
+                </div>
+              )}
+            {work.slug === "clinical_data_backed_llm_chat" &&
+              screenshots.length > 0 && (
+                <div className="mt-8 flex items-start gap-2 sm:gap-3">
+                  {screenshots.slice(0, 5).map((src, index) => (
+                    <button
+                      key={src}
+                      type="button"
+                      className="block flex-1 cursor-pointer overflow-hidden rounded-lg border border-[#2a2a2a] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-current"
+                      onClick={() => setCarousel({ images: screenshots, index })}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={src}
+                        alt={`ReachRx screenshot ${index + 1}`}
+                        className="block h-auto w-full"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
+            {work.slug === "ecom_ai_image_gen_platform"
+              ? ecomPreChallengeSections.map(renderSection)
+              : work.slug === "analytics_dashboard"
+                ? analyticsPreChallengeSections.map(renderSection)
+                : standardSections.map(renderSection)}
+
+            {work.slug === "ecom_ai_image_gen_platform" && (
+              <EcomAiSystemDiagram />
+            )}
+            {work.slug === "ecom_ai_image_gen_platform" &&
+              ecomFromChallengeSections.map(renderSection)}
+
+            {work.slug === "analytics_dashboard" && (
+              <FoxsInternalFeaturesDiagram />
+            )}
+            {work.slug === "analytics_dashboard" &&
+              analyticsFromChallengeSections.map(renderSection)}
 
             {work.slug === "generative_ai_styling_app" && (
               <CuraitArchitectureDiagram />
             )}
             {curaitTradeoffSections.map(renderSection)}
-
-            {work.slug === "ecom_ai_image_gen_platform" && (
-              <EcomAiSystemDiagram />
-            )}
             {work.slug === "rental_management_web_app" && (
               <RentroomMaintenanceDiagram />
-            )}
-            {work.slug === "analytics_dashboard" && (
-              <FoxsInternalFeaturesDiagram />
             )}
             {work.slug === "internal_dashboard" && <AvantStayTapeChartOutcomes />}
 
@@ -400,8 +631,7 @@ export function ProjectDetail({
 
             {galleryScreenshots.length > 0 && (
               <div className="mt-10">
-                <p className="section-heading">Screenshots</p>
-                <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                   {galleryScreenshots.slice(0, 3).map((src, j) => (
                     <button
                       key={src}
